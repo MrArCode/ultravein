@@ -28,8 +28,8 @@ public static class OutputFileNames
         if (string.IsNullOrWhiteSpace(name))
             return fallback;
 
-        var buffer = new StringBuilder(name.Length);
-        foreach (var ch in name)
+        StringBuilder buffer = new(name.Length);
+        foreach (char ch in name)
         {
             // Whitespace (including non-breaking spaces from Excel), control characters, and forbidden characters are replaced with a space.
             buffer.Append(InvalidChars.Contains(ch) || char.IsControl(ch) || char.IsWhiteSpace(ch) ? ' ' : ch);
@@ -37,7 +37,7 @@ public static class OutputFileNames
 
         // Collapse multiple spaces into one, remove dots and spaces from ends (Windows disallows them,
         // and a leading dot hides the file on macOS).
-        var result = string.Join(' ', buffer.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries))
+        string result = string.Join(' ', buffer.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries))
             .Trim(' ', '.');
 
         if (result.Length > MaxLength)
@@ -63,10 +63,10 @@ public sealed class OutputFileNameAllocator
 
     public string Allocate(string desiredName)
     {
-        var baseName = OutputFileNames.Sanitize(desiredName);
-        var candidate = baseName;
+        string baseName = OutputFileNames.Sanitize(desiredName);
+        string candidate = baseName;
 
-        for (var counter = 2; !_taken.Add(candidate); counter++)
+        for (int counter = 2; !_taken.Add(candidate); counter++)
             candidate = $"{baseName} ({counter})";
 
         return candidate;
