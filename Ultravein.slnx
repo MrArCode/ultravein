@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Ultravein.App/Ultravein.App.csproj" />
+    <Project Path="src/Ultravein.Core/Ultravein.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Ultravein.Core.Tests/Ultravein.Core.Tests.csproj" />
+  </Folder>
+</Solution>

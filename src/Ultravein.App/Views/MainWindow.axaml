@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Ultravein.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
+        x:Class="Ultravein.App.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding WindowTitle}"
+        Width="1100" Height="720"
+        MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <!-- Tylko dla podglądu w IDE. Właściwy DataContext ustawia App.axaml.cs. -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+
+        <!-- Pasek narzędzi -->
+        <Border DockPanel.Dock="Top" Padding="12,8" BorderBrush="#33808080" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="Otwórz szablon PDF…" IsEnabled="False" />
+                <Button Content="Wczytaj listę osób…" IsEnabled="False" />
+                <Button Content="Generuj certyfikaty" Classes="accent" IsEnabled="False" />
+            </StackPanel>
+        </Border>
+
+        <!-- Pasek stanu -->
+        <Border DockPanel.Dock="Bottom" Padding="12,6" BorderBrush="#33808080" BorderThickness="0,1,0,0">
+            <TextBlock Text="{Binding StatusText}" />
+        </Border>
+
+        <!-- Obszar roboczy: podgląd po lewej, ustawienia po prawej -->
+        <Grid ColumnDefinitions="*,320">
+
+            <Border Grid.Column="0" Background="#11808080">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" MaxWidth="440">
+                    <TextBlock Text="Podgląd szablonu"
+                               FontSize="20" FontWeight="SemiBold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="Tu pojawi się strona PDF, na której zaznaczysz prostokątem miejsce na imię i nazwisko."
+                               Opacity="0.7" TextWrapping="Wrap" TextAlignment="Center" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Padding="12" BorderBrush="#33808080" BorderThickness="1,0,0,0">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Ustawienia" FontSize="16" FontWeight="SemiBold" />
+                    <TextBlock Text="Pola, czcionka i lista osób pojawią się tutaj w kolejnych krokach."
+                               Opacity="0.7" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </DockPanel>
+</Window>

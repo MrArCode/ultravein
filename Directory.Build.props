@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Product>Ultravein</Product>
+    <Authors>Ultravein</Authors>
+    <Company>Ultravein</Company>
+    <Copyright>© 2026</Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NeutralLanguage>pl-PL</NeutralLanguage>
+    <SatelliteResourceLanguages>en;pl</SatelliteResourceLanguages>
+  </PropertyGroup>
+</Project>
