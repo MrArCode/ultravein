@@ -1,4 +1,4 @@
-# Publikuje aplikację jako pojedynczy plik exe dla Windows (domyślnie win-x64). Do uruchomienia na Windows.
+# Publishes the application as a single-file exe for Windows (default: win-x64). For execution on Windows.
 param([string]$Rid = "win-x64")
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
@@ -14,5 +14,5 @@ dotnet publish "$root\src\Ultravein.App\Ultravein.App.csproj" `
   -o $out
 
 Write-Host ""
-Write-Host "Gotowe: $out"
+Write-Host "Done: $out"
 Get-ChildItem $out

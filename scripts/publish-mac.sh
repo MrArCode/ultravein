@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Publikuje aplikację jako pakiet .app dla macOS (domyślnie osx-arm64, dla Intela: osx-x64).
+# Publishes the application as a .app bundle for macOS (default: osx-arm64, for Intel: osx-x64).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 RID="${1:-osx-arm64}"
@@ -24,10 +24,10 @@ if [ -f "$ROOT/scripts/mac/Ultravein.icns" ]; then
   cp "$ROOT/scripts/mac/Ultravein.icns" "$APP/Contents/Resources/Ultravein.icns"
 fi
 
-# Podpis ad hoc: wystarcza do uruchomienia lokalnie i na innym Macu po "prawy przycisk -> Otwórz".
-# Do dystrybucji bez ostrzeżeń potrzebne jest konto Apple Developer i notaryzacja.
+# Ad-hoc signing: sufficient to run locally and on another Mac via "Right-click -> Open".
+# Distribution without warnings requires an Apple Developer account and notarization.
 codesign --force --deep --sign - "$APP"
 
 echo
-echo "Gotowe: $APP"
+echo "Done: $APP"
 du -sh "$APP"

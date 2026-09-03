@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Publikuje aplikację jako pojedynczy plik exe dla Windows (domyślnie win-x64).
-# Działa także na macOS, bo Avalonia nie wymaga Windows do kompilacji.
+# Publishes the application as a single-file exe for Windows (default: win-x64).
+# Can also be run on macOS since Avalonia does not require Windows to build.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 RID="${1:-win-x64}"
@@ -16,5 +16,5 @@ dotnet publish "$ROOT/src/Ultravein.App/Ultravein.App.csproj" \
   -o "$OUT"
 
 echo
-echo "Gotowe: $OUT"
+echo "Done: $OUT"
 ls -lh "$OUT"
