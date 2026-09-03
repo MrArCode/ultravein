@@ -17,13 +17,12 @@ public class OutputFileNamesTests
     public void Sanitize_WhenGivenNamesWithForbiddenCharactersOrWhitespace_ReturnsCleanSafeFileName(
         string rawName, string expectedFileName)
     {
-        // Arrange
-        // Dane wejściowe 'rawName' oraz oczekiwany wynik 'expectedFileName' pochodzą z przypadku testowego.
+        // arrange
 
-        // Act
+        // act
         string safeFileName = OutputFileNames.Sanitize(rawName);
 
-        // Assert
+        // assert
         safeFileName.Should().Be(expectedFileName);
     }
 
@@ -35,42 +34,42 @@ public class OutputFileNamesTests
     public void Sanitize_WhenGivenNullEmptyOrUnusableString_ReturnsDefaultFallbackName(
         string? unusableInput)
     {
-        // Arrange
+        // arrange
         string fallbackFileName = OutputFileNames.DefaultFallback;
 
-        // Act
+        // act
         string resultFileName = OutputFileNames.Sanitize(unusableInput);
 
-        // Assert
+        // assert
         resultFileName.Should().Be(fallbackFileName);
     }
 
     [Test]
     public void Sanitize_WhenNameExceedsMaximumAllowedLength_TruncatesToMaxLength()
     {
-        // Arrange
+        // arrange
         string excessivelyLongName = new string('a', 300);
 
-        // Act
+        // act
         string truncatedFileName = OutputFileNames.Sanitize(excessivelyLongName);
 
-        // Assert
+        // assert
         truncatedFileName.Length.Should().Be(OutputFileNames.MaxLength);
     }
 
     [Test]
     public void Allocate_WhenGivenDuplicateNamesWithVaryingCase_AppendsIncrementalNumberSuffix()
     {
-        // Arrange
+        // arrange
         OutputFileNameAllocator nameAllocator = new OutputFileNameAllocator();
 
-        // Act
+        // act
         string firstAssignedName = nameAllocator.Allocate("Jan Kowalski");
         string secondDuplicateName = nameAllocator.Allocate("Jan Kowalski");
         string thirdDuplicateWithLowerCasing = nameAllocator.Allocate("jan kowalski");
         string differentPersonName = nameAllocator.Allocate("Anna Nowak");
 
-        // Assert
+        // assert
         firstAssignedName.Should().Be("Jan Kowalski");
         secondDuplicateName.Should().Be("Jan Kowalski (2)");
         thirdDuplicateWithLowerCasing.Should().Be("jan kowalski (3)");
@@ -80,14 +79,14 @@ public class OutputFileNamesTests
     [Test]
     public void Allocate_WhenGivenNameWithInvalidCharacters_SanitizesBeforeCheckingForCollisions()
     {
-        // Arrange
+        // arrange
         OutputFileNameAllocator nameAllocator = new OutputFileNameAllocator();
 
-        // Act
+        // act
         string sanitizedInitialName = nameAllocator.Allocate("Jan/Kowalski");
         string subsequentCollidingName = nameAllocator.Allocate("Jan Kowalski");
 
-        // Assert
+        // assert
         sanitizedInitialName.Should().Be("Jan Kowalski");
         subsequentCollidingName.Should().Be("Jan Kowalski (2)");
     }
