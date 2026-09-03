@@ -2,54 +2,93 @@ using Ultravein.Core.Output;
 
 namespace Ultravein.Core.Tests;
 
+[TestFixture]
 public class OutputFileNamesTests
 {
-    [Theory]
-    [InlineData("Jan Kowalski", "Jan Kowalski")]
-    [InlineData("  Anna \t  Nowak  ", "Anna Nowak")]
-    [InlineData("Anna Nowak", "Anna Nowak")]
-    [InlineData("Łukasz Żółć-Wiśniewski", "Łukasz Żółć-Wiśniewski")]
-    [InlineData("A/B:C*D?E\"F<G>H|I\\J", "A B C D E F G H I J")]
-    [InlineData("Nazwisko.", "Nazwisko")]
-    [InlineData(".ukryty", "ukryty")]
-    [InlineData("CON", "CON_")]
-    [InlineData("lpt1", "lpt1_")]
-    public void Sanitize_ProducesSafeFileName(string input, string expected)
-        => Assert.Equal(expected, OutputFileNames.Sanitize(input));
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
-    [InlineData("***")]
-    [InlineData("...")]
-    public void Sanitize_FallsBackWhenNothingUsableRemains(string? input)
-        => Assert.Equal(OutputFileNames.DefaultFallback, OutputFileNames.Sanitize(input));
-
-    [Fact]
-    public void Sanitize_TruncatesVeryLongNames()
+    [TestCase("Jan Kowalski", "Jan Kowalski")]
+    [TestCase("  Anna \t  Nowak  ", "Anna Nowak")]
+    [TestCase("Anna Nowak", "Anna Nowak")]
+    [TestCase("Łukasz Żółć-Wiśniewski", "Łukasz Żółć-Wiśniewski")]
+    [TestCase("A/B:C*D?E\"F<G>H|I\\J", "A B C D E F G H I J")]
+    [TestCase("Nazwisko.", "Nazwisko")]
+    [TestCase(".ukryty", "ukryty")]
+    [TestCase("CON", "CON_")]
+    [TestCase("lpt1", "lpt1_")]
+    public void Sanitize_WhenGivenNamesWithForbiddenCharactersOrWhitespace_ReturnsCleanSafeFileName(
+        string rawName, string expectedFileName)
     {
-        var longName = new string('a', 300);
-        Assert.Equal(OutputFileNames.MaxLength, OutputFileNames.Sanitize(longName).Length);
+        // Arrange
+        // Dane wejściowe 'rawName' oraz oczekiwany wynik 'expectedFileName' pochodzą z przypadku testowego.
+
+        // Act
+        string safeFileName = OutputFileNames.Sanitize(rawName);
+
+        // Assert
+        safeFileName.Should().Be(expectedFileName);
     }
 
-    [Fact]
-    public void Allocator_AddsCounterForDuplicatesIgnoringCase()
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
+    [TestCase("***")]
+    [TestCase("...")]
+    public void Sanitize_WhenGivenNullEmptyOrUnusableString_ReturnsDefaultFallbackName(
+        string? unusableInput)
     {
-        var allocator = new OutputFileNameAllocator();
+        // Arrange
+        string fallbackFileName = OutputFileNames.DefaultFallback;
 
-        Assert.Equal("Jan Kowalski", allocator.Allocate("Jan Kowalski"));
-        Assert.Equal("Jan Kowalski (2)", allocator.Allocate("Jan Kowalski"));
-        Assert.Equal("jan kowalski (3)", allocator.Allocate("jan kowalski"));
-        Assert.Equal("Anna Nowak", allocator.Allocate("Anna Nowak"));
+        // Act
+        string resultFileName = OutputFileNames.Sanitize(unusableInput);
+
+        // Assert
+        resultFileName.Should().Be(fallbackFileName);
     }
 
-    [Fact]
-    public void Allocator_SanitizesBeforeAllocating()
+    [Test]
+    public void Sanitize_WhenNameExceedsMaximumAllowedLength_TruncatesToMaxLength()
     {
-        var allocator = new OutputFileNameAllocator();
+        // Arrange
+        string excessivelyLongName = new string('a', 300);
 
-        Assert.Equal("Jan Kowalski", allocator.Allocate("Jan/Kowalski"));
-        Assert.Equal("Jan Kowalski (2)", allocator.Allocate("Jan Kowalski"));
+        // Act
+        string truncatedFileName = OutputFileNames.Sanitize(excessivelyLongName);
+
+        // Assert
+        truncatedFileName.Length.Should().Be(OutputFileNames.MaxLength);
+    }
+
+    [Test]
+    public void Allocate_WhenGivenDuplicateNamesWithVaryingCase_AppendsIncrementalNumberSuffix()
+    {
+        // Arrange
+        OutputFileNameAllocator nameAllocator = new OutputFileNameAllocator();
+
+        // Act
+        string firstAssignedName = nameAllocator.Allocate("Jan Kowalski");
+        string secondDuplicateName = nameAllocator.Allocate("Jan Kowalski");
+        string thirdDuplicateWithLowerCasing = nameAllocator.Allocate("jan kowalski");
+        string differentPersonName = nameAllocator.Allocate("Anna Nowak");
+
+        // Assert
+        firstAssignedName.Should().Be("Jan Kowalski");
+        secondDuplicateName.Should().Be("Jan Kowalski (2)");
+        thirdDuplicateWithLowerCasing.Should().Be("jan kowalski (3)");
+        differentPersonName.Should().Be("Anna Nowak");
+    }
+
+    [Test]
+    public void Allocate_WhenGivenNameWithInvalidCharacters_SanitizesBeforeCheckingForCollisions()
+    {
+        // Arrange
+        OutputFileNameAllocator nameAllocator = new OutputFileNameAllocator();
+
+        // Act
+        string sanitizedInitialName = nameAllocator.Allocate("Jan/Kowalski");
+        string subsequentCollidingName = nameAllocator.Allocate("Jan Kowalski");
+
+        // Assert
+        sanitizedInitialName.Should().Be("Jan Kowalski");
+        subsequentCollidingName.Should().Be("Jan Kowalski (2)");
     }
 }

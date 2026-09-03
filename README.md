@@ -7,7 +7,7 @@ i zapisuje osobny plik PDF dla każdej z nich. Działa na Windows i macOS.
 
 - `src/Ultravein.Core` – cała logika bez interfejsu: PDF, listy osób, nazwy plików, model projektu.
 - `src/Ultravein.App` – aplikacja okienkowa (Avalonia 12, wzorzec MVVM z CommunityToolkit).
-- `tests/Ultravein.Core.Tests` – testy jednostkowe rdzenia (xunit).
+- `tests/Ultravein.Core.Tests` – testy jednostkowe rdzenia (NUnit).
 - `scripts/` – publikacja paczek dla Windows i macOS.
 - `Directory.Build.props` – wspólna wersja i ustawienia kompilatora dla wszystkich projektów.
 
