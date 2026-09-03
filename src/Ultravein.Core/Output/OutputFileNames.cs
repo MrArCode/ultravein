@@ -3,18 +3,18 @@ using System.Text;
 namespace Ultravein.Core.Output;
 
 /// <summary>
-/// Buduje nazwy plików wyjściowych, które są poprawne jednocześnie na Windows i macOS,
-/// bo wygenerowane certyfikaty będą przenoszone między systemami.
+/// Builds output file names valid on both Windows and macOS,
+/// ensuring generated documents can safely be transferred between systems.
 /// </summary>
 public static class OutputFileNames
 {
     public const int MaxLength = 120;
-    public const string DefaultFallback = "certyfikat";
+    public const string DefaultFallback = "certificate";
 
-    // Znaki zabronione na Windows (macOS jest łagodniejszy, ale trzymamy wspólny mianownik).
+    // Characters forbidden on Windows (macOS is more lenient, but we keep a common denominator).
     private static readonly HashSet<char> InvalidChars = new("<>:\"/\\|?*");
 
-    // Nazwy zarezerwowane przez Windows, także z rozszerzeniem (np. CON.pdf).
+    // Names reserved by Windows, including with extensions (e.g. CON.pdf).
     private static readonly HashSet<string> ReservedNames = new(StringComparer.OrdinalIgnoreCase)
     {
         "CON", "PRN", "AUX", "NUL",
@@ -22,7 +22,7 @@ public static class OutputFileNames
         "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
     };
 
-    /// <summary>Zamienia dowolny tekst (np. imię i nazwisko z listy) na bezpieczną nazwę pliku bez rozszerzenia.</summary>
+    /// <summary>Converts any arbitrary text (e.g., person's name from a list) into a safe file name without an extension.</summary>
     public static string Sanitize(string? name, string fallback = DefaultFallback)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -31,12 +31,12 @@ public static class OutputFileNames
         var buffer = new StringBuilder(name.Length);
         foreach (var ch in name)
         {
-            // Białe znaki (także twarde spacje z Excela), znaki sterujące i zabronione zamieniamy na spację.
+            // Whitespace (including non-breaking spaces from Excel), control characters, and forbidden characters are replaced with a space.
             buffer.Append(InvalidChars.Contains(ch) || char.IsControl(ch) || char.IsWhiteSpace(ch) ? ' ' : ch);
         }
 
-        // Sklejamy wielokrotne spacje w jedną, usuwamy kropki i spacje z końców (Windows ich nie toleruje,
-        // a kropka na początku ukrywa plik na macOS).
+        // Collapse multiple spaces into one, remove dots and spaces from ends (Windows disallows them,
+        // and a leading dot hides the file on macOS).
         var result = string.Join(' ', buffer.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries))
             .Trim(' ', '.');
 
@@ -54,8 +54,8 @@ public static class OutputFileNames
 }
 
 /// <summary>
-/// Przydziela unikalne nazwy plików w obrębie jednego folderu wyjściowego.
-/// Porównuje bez rozróżniania wielkości liter, bo tak działają systemy plików Windows i macOS.
+/// Allocates unique file names within a single output folder.
+/// Performs case-insensitive comparison to match Windows and macOS file system behavior.
 /// </summary>
 public sealed class OutputFileNameAllocator
 {

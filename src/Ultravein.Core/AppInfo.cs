@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace Ultravein.Core;
 
-/// <summary>Nazwa i wersja produktu, wspólne dla wszystkich projektów (wersja pochodzi z Directory.Build.props).</summary>
+/// <summary>Product name and version shared across all projects (version is sourced from Directory.Build.props).</summary>
 public static class AppInfo
 {
     public const string ProductName = "Ultravein";
