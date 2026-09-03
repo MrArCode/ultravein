@@ -1,66 +1,52 @@
 # Ultravein
 
-Generator certyfikatów. Bierze szablon PDF, wpisuje w zaznaczone pole imię i nazwisko każdej osoby z listy
-i zapisuje osobny plik PDF dla każdej z nich. Działa na Windows i macOS.
+Batch document and certificate generator. Takes a template PDF, populates designated fields with personalized data from a list or spreadsheet, and exports an individual PDF file for each entry. Works cross-platform on Windows and macOS.
 
-## Struktura
+## Structure
 
-- `src/Ultravein.Core` – cała logika bez interfejsu: PDF, listy osób, nazwy plików, model projektu.
-- `src/Ultravein.App` – aplikacja okienkowa (Avalonia 12, wzorzec MVVM z CommunityToolkit).
-- `tests/Ultravein.Core.Tests` – testy jednostkowe rdzenia (NUnit).
-- `scripts/` – publikacja paczek dla Windows i macOS.
-- `Directory.Build.props` – wspólna wersja i ustawienia kompilatora dla wszystkich projektów.
+- `src/Ultravein.Core` – core domain logic without UI: PDF processing, data imports, file naming, and project model.
+- `src/Ultravein.App` – desktop UI application (Avalonia 12, MVVM pattern with CommunityToolkit).
+- `tests/Ultravein.Core.Tests` – core unit tests (NUnit).
+- `scripts/` – release packaging scripts for Windows and macOS.
+- `Directory.Build.props` – shared version and compiler configuration across all projects.
 
-## Wymagania do pracy nad kodem
+## Prerequisites
 
 - .NET SDK 10
 
-## Uruchomienie w trakcie prac
+## Running During Development
 
 ```bash
 dotnet run --project src/Ultravein.App
 ```
 
-Zrzut głównego okna do pliku PNG bez klikania (aplikacja sama zapisze obraz i się zamknie):
+Capture a screenshot of the main window to a PNG file headlessly (the app saves the image and exits automatically):
 
 ```bash
-dotnet run --project src/Ultravein.App -- --screenshot okno.png
+dotnet run --project src/Ultravein.App -- --screenshot window.png
 ```
 
-## Testy
+## Tests
 
 ```bash
 dotnet test
 ```
 
-## Publikacja
+## Publishing
 
-Windows, pojedynczy plik exe, użytkownik nie instaluje .NET:
+Windows single-file executable (self-contained, no .NET installation required by the user):
 
 ```bash
 ./scripts/publish-win.sh          # -> artifacts/win-x64/Ultravein.exe
 ```
 
-Na Windows to samo robi `.\scripts\publish-win.ps1`.
+On Windows, `.\scripts\publish-win.ps1` performs the same task.
 
-macOS, pakiet .app:
+macOS .app bundle:
 
 ```bash
 ./scripts/publish-mac.sh          # -> artifacts/osx-arm64/Ultravein.app (Apple Silicon)
-./scripts/publish-mac.sh osx-x64  # dla Maców z procesorem Intel
+./scripts/publish-mac.sh osx-x64  # for Intel-based Macs
 ```
 
-Pakiet macOS jest podpisany tylko ad hoc. Na innym Macu przy pierwszym uruchomieniu: prawy przycisk na aplikacji, „Otwórz".
-
-## Plan
-
-1. ~~Szkielet solucji, puste okno, publikacja na oba systemy.~~
-2. Otwieranie szablonu PDF, podgląd strony, rysowanie i edycja prostokąta na pole.
-3. Ustawienia pola: czcionka, maksymalny rozmiar, kolor, automatyczne dopasowanie.
-4. Wczytywanie listy z CSV i XLSX, wybór kolumn, podgląd z najdłuższym nazwiskiem.
-5. Generowanie do folderu z paskiem postępu, zapis i odczyt pliku projektu.
-
-## Do zrobienia poza planem
-
-- Własna ikona aplikacji (na razie logo Avalonii jako zaślepka) i plik `scripts/mac/Ultravein.icns`.
-- Podpis i notaryzacja pakietu macOS oraz podpis exe dla Windows, gdy aplikacja trafi do szerszego grona.
+The macOS bundle is signed ad-hoc. When launching on another Mac for the first time: right-click the app and choose "Open".
