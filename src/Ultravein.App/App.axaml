@@ -4,7 +4,7 @@
              xmlns:local="using:Ultravein.App"
              Name="Ultravein"
              RequestedThemeVariant="Default">
-    <!-- "Default" podąża za motywem systemu. Inne opcje: "Light", "Dark". -->
+    <!-- "Default" follows system theme. Other options: "Light", "Dark". -->
 
     <Application.DataTemplates>
         <local:ViewLocator />

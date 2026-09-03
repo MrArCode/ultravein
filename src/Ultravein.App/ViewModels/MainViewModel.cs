@@ -8,5 +8,5 @@ public partial class MainViewModel : ViewModelBase
     public string WindowTitle => $"{AppInfo.ProductName} {AppInfo.Version}";
 
     [ObservableProperty]
-    public partial string StatusText { get; set; } = "Gotowy. Zacznij od wybrania szablonu PDF.";
+    public partial string StatusText { get; set; } = "Ready. Start by opening a PDF template.";
 }

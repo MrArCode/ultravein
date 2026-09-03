@@ -28,8 +28,8 @@
     <ProjectReference Include="..\Ultravein.Core\Ultravein.Core.csproj" />
   </ItemGroup>
 
-  <!-- Pakiety natywne SkiaSharp i HarfBuzz dokładają do publikacji ponad 100 MB plików .pdb.
-       Symbole debugowania nie są potrzebne użytkownikom, więc usuwamy je z każdej paczki. -->
+  <!-- Native SkiaSharp and HarfBuzz packages add over 100 MB of .pdb files to published outputs.
+       Debug symbols are not needed by users, so we strip them from publish outputs. -->
   <Target Name="UltraveinRemovePdbsFromPublish" AfterTargets="ComputeResolvedFilesToPublishList">
     <ItemGroup>
       <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb'" />

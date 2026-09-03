@@ -20,10 +20,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var window = new MainWindow { DataContext = new MainViewModel() };
+            MainWindow window = new MainWindow { DataContext = new MainViewModel() };
             desktop.MainWindow = window;
 
-            var screenshotPath = DeveloperOptions.GetScreenshotPath(desktop.Args);
+            string? screenshotPath = DeveloperOptions.GetScreenshotPath(desktop.Args);
             if (screenshotPath is not null)
                 window.Opened += (_, _) => _ = SaveScreenshotAndExitAsync(window, screenshotPath, desktop);
         }
@@ -36,23 +36,23 @@ public partial class App : Application
     {
         try
         {
-            // Chwila na ustabilizowanie układu i czcionek po otwarciu okna.
+            // Allow layout and fonts to settle after the window opens.
             await Task.Delay(700);
             await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
 
-            var scale = window.RenderScaling;
-            var size = new PixelSize(
+            double scale = window.RenderScaling;
+            PixelSize size = new PixelSize(
                 (int)Math.Round(window.ClientSize.Width * scale),
                 (int)Math.Round(window.ClientSize.Height * scale));
 
-            using var bitmap = new RenderTargetBitmap(size, new Vector(96 * scale, 96 * scale));
+            using RenderTargetBitmap bitmap = new RenderTargetBitmap(size, new Vector(96 * scale, 96 * scale));
             bitmap.Render(window);
             bitmap.Save(path, PngBitmapEncoderOptions.Default);
-            Console.WriteLine($"Zapisano zrzut okna: {path}");
+            Console.WriteLine($"Saved window screenshot: {path}");
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"Nie udało się zapisać zrzutu okna: {ex}");
+            Console.Error.WriteLine($"Failed to save window screenshot: {ex}");
         }
         finally
         {

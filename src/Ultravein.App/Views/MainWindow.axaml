@@ -13,43 +13,43 @@
         WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
-        <!-- Tylko dla podglądu w IDE. Właściwy DataContext ustawia App.axaml.cs. -->
+        <!-- Only for preview in IDE. The actual DataContext is set by App.axaml.cs. -->
         <vm:MainViewModel />
     </Design.DataContext>
 
     <DockPanel>
 
-        <!-- Pasek narzędzi -->
+        <!-- Toolbar -->
         <Border DockPanel.Dock="Top" Padding="12,8" BorderBrush="#33808080" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button Content="Otwórz szablon PDF…" IsEnabled="False" />
-                <Button Content="Wczytaj listę osób…" IsEnabled="False" />
-                <Button Content="Generuj certyfikaty" Classes="accent" IsEnabled="False" />
+                <Button Content="Open PDF template…" IsEnabled="False" />
+                <Button Content="Load recipient list…" IsEnabled="False" />
+                <Button Content="Generate certificates" Classes="accent" IsEnabled="False" />
             </StackPanel>
         </Border>
 
-        <!-- Pasek stanu -->
+        <!-- Status bar -->
         <Border DockPanel.Dock="Bottom" Padding="12,6" BorderBrush="#33808080" BorderThickness="0,1,0,0">
             <TextBlock Text="{Binding StatusText}" />
         </Border>
 
-        <!-- Obszar roboczy: podgląd po lewej, ustawienia po prawej -->
+        <!-- Workspace: preview on the left, settings on the right -->
         <Grid ColumnDefinitions="*,320">
 
             <Border Grid.Column="0" Background="#11808080">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" MaxWidth="440">
-                    <TextBlock Text="Podgląd szablonu"
+                    <TextBlock Text="Template Preview"
                                FontSize="20" FontWeight="SemiBold"
                                HorizontalAlignment="Center" />
-                    <TextBlock Text="Tu pojawi się strona PDF, na której zaznaczysz prostokątem miejsce na imię i nazwisko."
+                    <TextBlock Text="The PDF page will appear here. Draw a rectangle to place your text field."
                                Opacity="0.7" TextWrapping="Wrap" TextAlignment="Center" />
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="1" Padding="12" BorderBrush="#33808080" BorderThickness="1,0,0,0">
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Ustawienia" FontSize="16" FontWeight="SemiBold" />
-                    <TextBlock Text="Pola, czcionka i lista osób pojawią się tutaj w kolejnych krokach."
+                    <TextBlock Text="Settings" FontSize="16" FontWeight="SemiBold" />
+                    <TextBlock Text="Fields, fonts, and data mapping will appear here in upcoming steps."
                                Opacity="0.7" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
