@@ -19,11 +19,9 @@
             height="600"
             [alt]="member.name"
           />
-          <div class="member__body">
-            <h3>{{ member.name }}</h3>
-            <p class="member__role">{{ member.role }}</p>
-            <p class="member__credentials">{{ member.credentials }}</p>
-          </div>
+          <h3 class="member__name">{{ member.name }}</h3>
+          <p class="member__role">{{ member.role }}</p>
+          <p class="member__credentials">{{ member.credentials }}</p>
         </li>
       }
     </ul>

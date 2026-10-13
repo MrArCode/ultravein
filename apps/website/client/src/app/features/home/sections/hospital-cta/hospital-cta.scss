@@ -1,7 +1,17 @@
+// Follows a white section, so only the bottom padding keeps the rhythm before the footer.
 .cta {
+  padding-top: 0;
+}
+
+.cta__panel {
   position: relative;
+  display: grid;
+  grid-template-columns: 1.4fr auto;
+  align-items: center;
+  gap: 2rem;
   overflow: hidden;
-  padding-block: clamp(3rem, 7vw, 5rem);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border-radius: var(--uv-radius-lg);
   background: var(--uv-color-blue);
   color: #fff;
 
@@ -24,16 +34,9 @@
   }
 }
 
-.cta__inner {
+.cta__text {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1.4fr auto;
-  align-items: center;
-  gap: 2rem;
-}
-
-.cta__text {
   display: grid;
   gap: 0.75rem;
   max-width: 40rem;
@@ -44,6 +47,8 @@
 }
 
 .cta__actions {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   gap: 0.75rem;
@@ -55,7 +60,7 @@
 }
 
 @media (max-width: 760px) {
-  .cta__inner {
+  .cta__panel {
     grid-template-columns: 1fr;
   }
 

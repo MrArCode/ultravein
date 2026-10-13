@@ -21,10 +21,10 @@
 
     <ol class="publications__list">
       @for (publication of publications; track publication.title) {
-        <li>
-          <p class="publications__meta">{{ publication.source }} · {{ publication.year }}</p>
-          <h3>{{ publication.title }}</h3>
-          <p class="publications__authors">{{ publication.authors }}</p>
+        <li class="publication">
+          <p class="publication__meta">{{ publication.source }} · {{ publication.year }}</p>
+          <h3 class="publication__title">{{ publication.title }}</h3>
+          <p class="publication__authors">{{ publication.authors }}</p>
         </li>
       }
     </ol>

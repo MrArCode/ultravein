@@ -11,10 +11,12 @@
 
     @for (group of months; track group.month) {
       <div class="agenda__month">
-        <h3 class="agenda__month-title">{{ group.firstDate | date: 'LLLL yyyy' }}</h3>
+        <h3 class="agenda__month-title">
+          <span class="agenda__month-label">{{ group.firstDate | date: 'LLLL yyyy' }}</span>
+        </h3>
         <ul class="agenda__list">
           @for (course of group.courses; track course.id) {
-            <li class="row">
+            <li class="row uv-clickable">
               <p class="row__date">
                 <span class="row__day">{{ course.date | date: 'dd' }}</span>
                 <span class="row__weekday row__weekday--long">{{
@@ -26,7 +28,7 @@
               </p>
 
               <div class="row__main">
-                <a class="row__title" [href]="course.detailsUrl">
+                <a class="row__title uv-cover-link" [href]="course.detailsUrl">
                   {{ course.title }}<span class="uv-visually-hidden"> – szczegóły i zapisy</span>
                 </a>
                 <p class="row__meta">
@@ -47,7 +49,7 @@
               <p class="row__price">
                 {{ course.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
               </p>
-              <span class="row__go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
+              <span class="row__go uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
             </li>
           }
         </ul>

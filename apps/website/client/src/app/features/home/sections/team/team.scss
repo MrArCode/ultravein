@@ -1,7 +1,7 @@
 .team {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: 2rem 1.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -9,28 +9,20 @@
 
 .member {
   display: grid;
-  grid-template-rows: auto 1fr;
-  overflow: hidden;
-  border-radius: var(--uv-radius-lg);
-  background: var(--uv-color-surface);
-  box-shadow: var(--uv-shadow-card);
+  align-content: start;
+  gap: 0.3rem;
 }
 
 .member__photo {
   width: 100%;
   aspect-ratio: 4 / 5;
+  margin-bottom: 0.75rem;
+  border-radius: var(--uv-radius-lg);
   object-fit: cover;
 }
 
-.member__body {
-  display: grid;
-  align-content: start;
-  gap: 0.35rem;
-  padding: 1.25rem;
-
-  h3 {
-    font-size: var(--uv-text-lg);
-  }
+.member__name {
+  font-size: var(--uv-text-lg);
 }
 
 .member__role {
@@ -46,11 +38,5 @@
 @media (max-width: 960px) {
   .team {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .team {
-    grid-template-columns: 1fr;
   }
 }

@@ -31,12 +31,13 @@
   --uv-text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
   --uv-text-3xl: clamp(2.25rem, 1.6rem + 2.8vw, 4rem);
 
-  // Shapes and depth.
+  // Shapes and depth. Surfaces are flat with a hairline border;
+  // the shadow is reserved for floating elements such as the mobile menu.
   --uv-radius-sm: 6px;
   --uv-radius-md: 12px;
   --uv-radius-lg: 20px;
   --uv-radius-pill: 999px;
-  --uv-shadow-card: 0 1px 2px rgb(19 32 58 / 6%), 0 10px 28px rgb(19 32 58 / 8%);
+  --uv-shadow-float: 0 1px 2px rgb(19 32 58 / 6%), 0 10px 28px rgb(19 32 58 / 10%);
 
   // Layout.
   --uv-container: 1200px;

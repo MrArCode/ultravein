@@ -11,7 +11,7 @@
 
     <ul class="formats">
       @for (offer of offers; track offer.title) {
-        <li class="format">
+        <li class="format uv-surface uv-clickable">
           <img
             class="format__image"
             [ngSrc]="offer.image"
@@ -20,10 +20,14 @@
             [alt]="offer.imageAlt"
           />
           <div class="format__body">
-            <h3>{{ offer.title }}</h3>
+            <h3 class="format__title">
+              <a class="uv-cover-link" [href]="offer.linkUrl">{{ offer.title }}</a>
+            </h3>
             <p>{{ offer.description }}</p>
-            <p class="format__price">{{ offer.priceNote }}</p>
-            <a class="uv-link-arrow" [href]="offer.linkUrl">{{ offer.linkLabel }}</a>
+            <p class="format__footer">
+              <span class="format__price">{{ offer.priceNote }}</span>
+              <span class="uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
+            </p>
           </div>
         </li>
       }
