@@ -1,0 +1,50 @@
+<header class="header">
+  <div class="uv-container header__bar">
+    <a
+      class="header__logo"
+      routerLink="/"
+      aria-label="UltraVein – strona główna"
+      (click)="closeMenu()"
+    >
+      <img ngSrc="images/brand/logo-color.webp" width="560" height="72" alt="UltraVein" priority />
+    </a>
+
+    <button
+      type="button"
+      class="header__toggle"
+      aria-controls="main-menu"
+      [attr.aria-expanded]="menuOpen()"
+      (click)="toggleMenu()"
+    >
+      <span class="uv-visually-hidden">{{ menuOpen() ? 'Zamknij menu' : 'Otwórz menu' }}</span>
+      <span
+        class="header__toggle-icon"
+        [class.header__toggle-icon--open]="menuOpen()"
+        aria-hidden="true"
+      ></span>
+    </button>
+
+    <nav
+      id="main-menu"
+      class="header__nav"
+      [class.header__nav--open]="menuOpen()"
+      aria-label="Menu główne"
+    >
+      <ul class="header__links">
+        @for (item of navItems; track item.fragment) {
+          <li>
+            <a routerLink="/" [fragment]="item.fragment" (click)="closeMenu()">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+      <a
+        class="uv-button uv-button--primary header__cta"
+        routerLink="/"
+        fragment="terminy"
+        (click)="closeMenu()"
+      >
+        Zapisz się na kurs
+      </a>
+    </nav>
+  </div>
+</header>

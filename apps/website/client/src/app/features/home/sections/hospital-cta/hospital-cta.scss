@@ -1,0 +1,65 @@
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(3rem, 7vw, 5rem);
+  background: var(--uv-color-blue);
+  color: #fff;
+
+  // Ring motif from the logo sign, echoed in the background.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -6rem;
+    width: 22rem;
+    aspect-ratio: 1;
+    border: 2px solid rgb(255 255 255 / 18%);
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
+  h2 {
+    color: #fff;
+    font-size: var(--uv-text-2xl);
+  }
+}
+
+.cta__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.4fr auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cta__text {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 40rem;
+}
+
+.cta__eyebrow {
+  color: #fff;
+}
+
+.cta__actions {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.cta__phone {
+  color: #fff;
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .cta__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .cta__actions {
+    justify-items: start;
+  }
+}

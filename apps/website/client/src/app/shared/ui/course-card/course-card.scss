@@ -1,0 +1,125 @@
+:host {
+  display: block;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--uv-color-line);
+  border-radius: var(--uv-radius-lg);
+  background: var(--uv-color-surface);
+  box-shadow: var(--uv-shadow-card);
+}
+
+.card__date {
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  padding: 0.9rem 0.5rem;
+  border-radius: var(--uv-radius-md);
+  background: var(--uv-color-navy);
+  color: #fff;
+  text-align: center;
+}
+
+.card__date--online {
+  background: var(--uv-color-blue);
+}
+
+.card__day {
+  font-family: var(--uv-font-heading);
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.card__month,
+.card__weekday {
+  font-size: var(--uv-text-sm);
+}
+
+.card__weekday {
+  opacity: 0.8;
+}
+
+.card__body {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.card__format {
+  color: var(--uv-color-navy);
+  font-size: var(--uv-text-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card__format--online {
+  color: var(--uv-color-blue);
+}
+
+.card__title {
+  font-size: var(--uv-text-xl);
+}
+
+.card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  color: var(--uv-color-muted);
+  list-style: none;
+}
+
+.card__points {
+  color: var(--uv-color-red-strong);
+  font-weight: 600;
+}
+
+.card__footer {
+  display: grid;
+  justify-items: end;
+  gap: 0.75rem;
+}
+
+.card__price {
+  color: var(--uv-color-ink);
+  font-family: var(--uv-font-heading);
+  font-size: var(--uv-text-xl);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .card {
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+  }
+
+  .card__date {
+    min-width: 5.5rem;
+    padding-inline: 0.6rem;
+  }
+
+  .card__day {
+    font-size: 1.75rem;
+  }
+
+  .card__footer {
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    justify-items: stretch;
+  }
+
+  .card__cta {
+    justify-self: end;
+  }
+}

@@ -1,0 +1,32 @@
+<section id="formy" class="uv-section uv-section--alt" aria-labelledby="formats-title">
+  <div class="uv-container">
+    <div class="uv-section-header">
+      <p class="uv-eyebrow">Formy szkoleń</p>
+      <h2 id="formats-title">Wybierz sposób nauki</h2>
+      <p>
+        Praktyka na sprzęcie, wiedza na żywo z instruktorami albo szkolenie całego zespołu w Twoim
+        szpitalu.
+      </p>
+    </div>
+
+    <ul class="formats">
+      @for (offer of offers; track offer.title) {
+        <li class="format">
+          <img
+            class="format__image"
+            [ngSrc]="offer.image"
+            [width]="offer.imageWidth"
+            [height]="offer.imageHeight"
+            [alt]="offer.imageAlt"
+          />
+          <div class="format__body">
+            <h3>{{ offer.title }}</h3>
+            <p>{{ offer.description }}</p>
+            <p class="format__price">{{ offer.priceNote }}</p>
+            <a class="uv-link-arrow" [href]="offer.linkUrl">{{ offer.linkLabel }}</a>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

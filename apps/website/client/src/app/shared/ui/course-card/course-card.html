@@ -1,0 +1,29 @@
+@let item = course();
+<article class="card">
+  <div class="card__date" [class.card__date--online]="item.format === 'online'">
+    <span class="card__day">{{ item.date | date: 'dd' }}</span>
+    <span class="card__month">{{ item.date | date: 'LLL yyyy' }}</span>
+    <span class="card__weekday">{{ item.date | date: 'EEEE' }}</span>
+  </div>
+
+  <div class="card__body">
+    <p class="card__format" [class.card__format--online]="item.format === 'online'">
+      {{ formatLabel() }}
+    </p>
+    <h3 class="card__title">{{ item.title }}</h3>
+    <ul class="card__facts">
+      <li>{{ item.timeRange }}</li>
+      <li>{{ item.location }}</li>
+      @if (item.educationalPoints) {
+        <li class="card__points">{{ item.educationalPoints }} pkt edukacyjnych NRPiP</li>
+      }
+    </ul>
+  </div>
+
+  <div class="card__footer">
+    <p class="card__price">{{ item.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}</p>
+    <a class="uv-button uv-button--primary card__cta" [href]="item.detailsUrl">
+      Szczegóły i zapisy<span class="uv-visually-hidden">: {{ item.title }}</span>
+    </a>
+  </div>
+</article>

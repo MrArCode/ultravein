@@ -1,0 +1,22 @@
+<section id="terminy" class="uv-section" aria-labelledby="courses-title">
+  <div class="uv-container">
+    <div class="uv-section-header">
+      <p class="uv-eyebrow">Kalendarz kursów</p>
+      <h2 id="courses-title">Najbliższe terminy</h2>
+      <p>
+        Kursy stacjonarne w Warszawie i kursy on-line na żywo. Po ukończeniu szkolenia otrzymujesz
+        dokument potwierdzający udział.
+      </p>
+    </div>
+
+    <ul class="courses">
+      @for (course of courses; track course.id) {
+        <li><uv-course-card [course]="course" /></li>
+      }
+    </ul>
+
+    <a class="uv-link-arrow courses__more" href="https://ultravein.pl/kursy/"
+      >Pełna oferta kursów</a
+    >
+  </div>
+</section>

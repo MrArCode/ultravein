@@ -1,0 +1,33 @@
+<section id="o-nas" class="uv-section" aria-labelledby="about-title">
+  <div class="uv-container about">
+    <div class="about__photo">
+      <img
+        ngSrc="images/workshop-ultrasound.webp"
+        width="760"
+        height="950"
+        alt="Ćwiczenia z aparatem USG na fantomie podczas warsztatów"
+      />
+    </div>
+
+    <div class="about__content">
+      <div class="uv-section-header">
+        <p class="uv-eyebrow">O nas</p>
+        <h2 id="about-title">Uczymy tego, co robimy na co dzień</h2>
+        <p>
+          Jesteśmy zespołem instruktorów z wieloletnim doświadczeniem klinicznym i dydaktycznym. W
+          2020 roku byliśmy częścią procesu tworzenia pierwszego zespołu dostępów naczyniowych w
+          Polsce.
+        </p>
+      </div>
+
+      <ul class="about__list">
+        @for (highlight of highlights; track highlight.title) {
+          <li>
+            <h3>{{ highlight.title }}</h3>
+            <p>{{ highlight.description }}</p>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>

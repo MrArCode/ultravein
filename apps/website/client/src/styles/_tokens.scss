@@ -1,0 +1,46 @@
+// Design tokens: the single place to change the look of the whole site.
+// Colors are derived from the UltraVein logo (blue "V", red arcs, black ring).
+
+:root {
+  // Brand colors.
+  --uv-color-blue: #406bb3;
+  --uv-color-blue-strong: #2f5596;
+  --uv-color-blue-soft: #e8eef8;
+  --uv-color-navy: #1e3153;
+  --uv-color-navy-strong: #14233d;
+  // Darker variant of the logo red, so white button text keeps a 5:1 contrast ratio.
+  --uv-color-red: #d91a12;
+  --uv-color-red-strong: #b8150e;
+  --uv-color-red-soft: #fdecea;
+
+  // Neutrals with a slight blue bias.
+  --uv-color-ink: #13203a;
+  --uv-color-text: #2b3850;
+  --uv-color-muted: #5a6781;
+  --uv-color-line: #dbe3ef;
+  --uv-color-surface: #ffffff;
+  --uv-color-surface-alt: #f3f6fb;
+
+  // Typography.
+  --uv-font-heading: 'Outfit Variable', 'Segoe UI', system-ui, sans-serif;
+  --uv-font-body: 'Inter Variable', 'Segoe UI', system-ui, sans-serif;
+  --uv-text-sm: 0.875rem;
+  --uv-text-md: 1rem;
+  --uv-text-lg: 1.125rem;
+  --uv-text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --uv-text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --uv-text-3xl: clamp(2.25rem, 1.6rem + 2.8vw, 4rem);
+
+  // Shapes and depth.
+  --uv-radius-sm: 6px;
+  --uv-radius-md: 12px;
+  --uv-radius-lg: 20px;
+  --uv-radius-pill: 999px;
+  --uv-shadow-card: 0 1px 2px rgb(19 32 58 / 6%), 0 10px 28px rgb(19 32 58 / 8%);
+
+  // Layout.
+  --uv-container: 1200px;
+  --uv-gutter: clamp(1rem, 4vw, 2rem);
+  --uv-section-space: clamp(3.5rem, 8vw, 6.5rem);
+  --uv-header-height: 76px;
+}

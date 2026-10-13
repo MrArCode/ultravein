@@ -1,0 +1,10 @@
+<section class="trust" aria-label="UltraVein w liczbach">
+  <ul class="uv-container trust__list">
+    @for (fact of facts; track fact.value) {
+      <li class="trust__item">
+        <span class="trust__value">{{ fact.value }}</span>
+        <span class="trust__label">{{ fact.label }}</span>
+      </li>
+    }
+  </ul>
+</section>

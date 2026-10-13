@@ -1,0 +1,31 @@
+<section id="zespol" class="uv-section uv-section--alt" aria-labelledby="team-title">
+  <div class="uv-container">
+    <div class="uv-section-header">
+      <p class="uv-eyebrow">Zespół</p>
+      <h2 id="team-title">Instruktorzy, którzy pozostają praktykami</h2>
+      <p>
+        Specjaliści pielęgniarstwa anestezjologicznego i intensywnej opieki, ratownicy medyczni i
+        autorzy publikacji naukowych.
+      </p>
+    </div>
+
+    <ul class="team">
+      @for (member of members; track member.name) {
+        <li class="member">
+          <img
+            class="member__photo"
+            [ngSrc]="member.photo"
+            width="480"
+            height="600"
+            [alt]="member.name"
+          />
+          <div class="member__body">
+            <h3>{{ member.name }}</h3>
+            <p class="member__role">{{ member.role }}</p>
+            <p class="member__credentials">{{ member.credentials }}</p>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
