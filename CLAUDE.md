@@ -21,13 +21,13 @@ This document outlines the mandatory engineering standards, workflow rules, and 
   - The `var` keyword is **strictly forbidden everywhere** across the entire codebase (production code, test projects, helper scripts, etc.).
   - Always use explicit types for all variable declarations and loop variables (e.g., `string`, `int`, `StringBuilder`, `OutputFileNameAllocator`).
 - **Code Style**: Follow modern C# idioms while prioritizing readability and explicit type clarity.
-- **Architecture & Structure**: For architecture overview, solution layout, and project descriptions, refer to [README.md](README.md).
+- **Architecture & Structure**: For the monorepo layout, refer to [README.md](README.md). Each product under `apps/` has its own README describing its architecture, solution layout, and projects.
 
 ---
 
 ## 3. Testing Standards
 
-All tests reside in `tests/` (e.g., `tests/Ultravein.Core.Tests`).
+Tests reside in each product's `tests/` directory (e.g., `apps/certificate-generator/tests/Ultravein.Core.Tests`).
 
 - **Framework**: Use **NUnit** (4.x) with **FluentAssertions** (e.g., `.Should().Be(...)`). Never use legacy NUnit `Assert` methods.
 - **Test Structure (AAA)**: Every test method must follow the Arrange-Act-Assert pattern with explicit lowercase block comments:
