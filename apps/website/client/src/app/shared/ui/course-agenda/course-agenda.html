@@ -1,0 +1,48 @@
+@for (group of months(); track group.month) {
+  <div class="agenda__month">
+    <h3 class="agenda__month-title">
+      <span class="agenda__month-label">{{ group.firstDate | date: 'LLLL yyyy' }}</span>
+    </h3>
+    <ul class="agenda__list">
+      @for (item of group.items; track item.edition.id) {
+        <li class="row uv-clickable">
+          <p class="row__date">
+            <span class="row__day">{{ item.edition.date | date: 'dd' }}</span>
+            <span class="row__weekday row__weekday--long">{{
+              item.edition.date | date: 'EEEE'
+            }}</span>
+            <span class="row__weekday row__weekday--short">{{
+              item.edition.date | date: 'EEE'
+            }}</span>
+          </p>
+
+          <div class="row__main">
+            <a class="row__title uv-cover-link" [routerLink]="['/kursy', item.program.slug]">
+              {{ item.program.title }}<span class="uv-visually-hidden"> – szczegóły i zapisy</span>
+            </a>
+            <p class="row__meta">
+              <span
+                class="row__format"
+                [class.row__format--online]="item.program.format === 'online'"
+              >
+                <uv-icon [name]="item.program.format === 'online' ? 'monitor' : 'map-pin'" />
+                {{ item.program.format === 'online' ? formatLabels.online : item.edition.location }}
+              </span>
+              <span>{{ item.edition.timeRange }}</span>
+              @if (item.program.educationalPoints) {
+                <span class="uv-pill uv-pill--info">
+                  {{ item.program.educationalPoints }} pkt NRPiP
+                </span>
+              }
+            </p>
+          </div>
+
+          <p class="row__price">
+            {{ item.program.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
+          </p>
+          <span class="row__go uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
+        </li>
+      }
+    </ul>
+  </div>
+}

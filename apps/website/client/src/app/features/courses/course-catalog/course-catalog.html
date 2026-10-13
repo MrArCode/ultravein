@@ -1,0 +1,39 @@
+<uv-page-header
+  eyebrow="Oferta"
+  title="Kursy"
+  lead="Specjalistyczne kursy, które przygotowują praktycznie do codziennej pracy klinicznej. Stacjonarnie w Warszawie, on-line na żywo albo w Twojej placówce."
+/>
+
+<section class="uv-section catalog" aria-labelledby="catalog-title">
+  <div class="uv-container">
+    <h2 id="catalog-title" class="uv-visually-hidden">Lista kursów</h2>
+
+    <ul class="uv-chips catalog__filters" aria-label="Filtruj według formy">
+      @for (filter of filters; track filter.label) {
+        <li>
+          <a
+            class="uv-chip"
+            [class.uv-chip--active]="activeParam() === filter.param"
+            routerLink="/kursy"
+            [queryParams]="filter.param ? { forma: filter.param } : {}"
+            [attr.aria-current]="activeParam() === filter.param ? 'true' : null"
+            >{{ filter.label }}</a
+          >
+        </li>
+      }
+    </ul>
+
+    <ul class="catalog__grid">
+      @for (program of programs(); track program.slug) {
+        <li><uv-course-card [program]="program" /></li>
+      } @empty {
+        <li class="catalog__empty">Brak kursów w tej kategorii.</li>
+      }
+    </ul>
+
+    <p class="catalog__note">
+      Potrzebujesz szkolenia dla całego zespołu w swojej placówce?
+      <a routerLink="/dla-placowek">Zobacz ofertę dla szpitali i placówek</a>.
+    </p>
+  </div>
+</section>

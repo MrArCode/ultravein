@@ -1,7 +1,5 @@
-/** A scientific publication co-authored by the UltraVein team. */
+/** A scientific publication co-authored by the UltraVein team, kept as a full citation. */
 export interface Publication {
-  readonly authors: string;
-  readonly title: string;
-  readonly source: string;
   readonly year: number;
+  readonly citation: string;
 }

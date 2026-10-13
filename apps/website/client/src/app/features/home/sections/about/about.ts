@@ -1,5 +1,8 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TEAM_MEMBERS } from '../../../../core/data/team.data';
+import { TeamMember } from '../../../../core/models/team-member';
 
 /** A reason to choose UltraVein trainings. */
 interface Highlight {
@@ -9,7 +12,7 @@ interface Highlight {
 
 @Component({
   selector: 'uv-about',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, RouterLink],
   templateUrl: './about.html',
   styleUrl: './about.scss',
 })
@@ -29,4 +32,8 @@ export class About {
       description: 'Programy opieramy na międzynarodowych standardach, m.in. INS 2024 i AVA 2026.',
     },
   ];
+
+  protected readonly portraits: readonly TeamMember[] = TEAM_MEMBERS.filter(
+    (member: TeamMember) => member.photo !== null,
+  );
 }

@@ -1,0 +1,64 @@
+<uv-page-header
+  eyebrow="Kalendarz"
+  title="Terminarz kursów"
+  lead="Wszystkie zaplanowane edycje w jednym miejscu. Kliknij kurs, żeby zobaczyć program i zapisać się."
+/>
+
+<section class="uv-section" aria-labelledby="schedule-title">
+  <div class="uv-container">
+    <h2 id="schedule-title" class="uv-visually-hidden">Zaplanowane terminy</h2>
+
+    <ul class="uv-chips schedule__filters" aria-label="Filtruj według formy">
+      @for (filter of filters; track filter.label) {
+        <li>
+          <a
+            class="uv-chip"
+            [class.uv-chip--active]="activeFilter() === filter"
+            routerLink="/terminarz"
+            [queryParams]="filter.param ? { forma: filter.param } : {}"
+            [attr.aria-current]="activeFilter() === filter ? 'true' : null"
+            >{{ filter.label }}</a
+          >
+        </li>
+      }
+    </ul>
+
+    @if (items().length) {
+      <uv-course-agenda [items]="items()" />
+    } @else {
+      <p class="schedule__empty">Brak zaplanowanych terminów w tej kategorii.</p>
+    }
+  </div>
+</section>
+
+@if (awaiting.length) {
+  <section class="uv-section uv-section--alt" aria-labelledby="awaiting-title">
+    <div class="uv-container">
+      <div class="uv-section-header">
+        <p class="uv-eyebrow">Wkrótce</p>
+        <h2 id="awaiting-title">Kursy bez ustalonego terminu</h2>
+        <p>Zostaw nam e-mail, a damy znać, gdy ogłosimy kolejną edycję.</p>
+      </div>
+
+      <ul class="awaiting">
+        @for (entry of awaiting; track entry.program.slug) {
+          <li class="awaiting__row">
+            <div class="awaiting__text">
+              <a class="awaiting__title" [routerLink]="['/kursy', entry.program.slug]">
+                {{ entry.program.title }}
+              </a>
+              <p class="awaiting__meta">
+                {{
+                  entry.program.format === 'online' ? 'On-line na żywo' : 'Stacjonarnie, Warszawa'
+                }}
+              </p>
+            </div>
+            <a class="uv-button uv-button--secondary awaiting__cta" [href]="entry.notifyHref">
+              Powiadom mnie o terminie
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+}

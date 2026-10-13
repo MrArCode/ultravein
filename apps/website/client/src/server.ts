@@ -9,8 +9,17 @@ import { join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
+/**
+ * Hostnames the server-side app may be requested with (SSRF protection).
+ * Set ALLOWED_HOSTS to a comma-separated list, e.g. "ultravein.pl,www.ultravein.pl".
+ */
+const allowedHosts: string[] = (process.env['ALLOWED_HOSTS'] ?? 'localhost')
+  .split(',')
+  .map((host: string) => host.trim())
+  .filter((host: string) => host.length > 0);
+
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({ allowedHosts });
 
 /**
  * Example Express Rest API endpoints can be defined here.

@@ -28,6 +28,20 @@
           </li>
         }
       </ul>
+
+      <div class="about__team">
+        <ul class="about__portraits" aria-label="Instruktorzy">
+          @for (member of portraits; track member.name) {
+            <li>
+              <img [ngSrc]="member.photo ?? ''" width="480" height="600" [alt]="member.name" />
+            </li>
+          }
+        </ul>
+        <div class="about__links">
+          <a class="uv-link-arrow" routerLink="/zespol">Poznaj zespół</a>
+          <a class="uv-link-arrow" routerLink="/o-nas">Więcej o nas</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>

@@ -2,8 +2,9 @@ import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UPCOMING_COURSES } from '../../../../core/data/courses.data';
-import { Course } from '../../../../core/models/course';
+import { provideRouter } from '@angular/router';
+import { AgendaItem } from '../../../../core/models/course';
+import { CoursesService } from '../../../../core/services/courses.service';
 import { UpcomingCourses } from './upcoming-courses';
 
 describe('UpcomingCourses', () => {
@@ -14,7 +15,7 @@ describe('UpcomingCourses', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UpcomingCourses],
-      providers: [{ provide: LOCALE_ID, useValue: 'pl' }],
+      providers: [provideRouter([]), { provide: LOCALE_ID, useValue: 'pl' }],
     }).compileComponents();
   });
 
@@ -24,13 +25,9 @@ describe('UpcomingCourses', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
-  function sortedCourses(): Course[] {
-    return [...UPCOMING_COURSES].sort((a: Course, b: Course) => a.date.localeCompare(b.date));
-  }
-
-  it('render_WhenCreated_ShowsOneRowPerCourseLinkedToItsDetailsInDateOrder', async () => {
+  it('render_WhenCreated_ShowsAtMostFourNearestEditionsLinkedToTheirCourses', async () => {
     // arrange
-    const expectedUrls: string[] = sortedCourses().map((course: Course) => course.detailsUrl);
+    const expected: readonly AgendaItem[] = TestBed.inject(CoursesService).getUpcoming(4);
 
     // act
     const element: HTMLElement = await render();
@@ -39,7 +36,10 @@ describe('UpcomingCourses', () => {
     );
 
     // assert
-    expect(links.map((link: HTMLAnchorElement) => link.getAttribute('href'))).toEqual(expectedUrls);
+    expect(links.length).toBe(expected.length);
+    expect(links.map((link: HTMLAnchorElement) => link.getAttribute('href'))).toEqual(
+      expected.map((item: AgendaItem) => `/kursy/${item.program.slug}`),
+    );
   });
 
   it('render_WhenCreated_LabelsMonthsInPolish', async () => {
@@ -58,25 +58,5 @@ describe('UpcomingCourses', () => {
     for (const title of titles) {
       expect(title).toMatch(polishMonthPattern);
     }
-  });
-
-  it('render_WhenCourseGrantsEducationalPoints_ShowsPointsOnlyForThatCourse', async () => {
-    // arrange
-    const courses: Course[] = sortedCourses();
-
-    // act
-    const element: HTMLElement = await render();
-    const rows: Element[] = Array.from(element.querySelectorAll('.row'));
-
-    // assert
-    expect(rows.length).toBe(courses.length);
-    courses.forEach((course: Course, index: number) => {
-      const points: string | undefined = rows[index]
-        .querySelector('.row__points')
-        ?.textContent?.trim();
-      expect(points).toBe(
-        course.educationalPoints ? `${course.educationalPoints} pkt NRPiP` : undefined,
-      );
-    });
   });
 });

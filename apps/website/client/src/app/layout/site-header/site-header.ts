@@ -1,11 +1,11 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component, signal, WritableSignal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NAV_ITEMS, NavItem } from '../navigation';
 
 @Component({
   selector: 'uv-site-header',
-  imports: [NgOptimizedImage, RouterLink],
+  imports: [NgOptimizedImage, RouterLink, RouterLinkActive],
   templateUrl: './site-header.html',
   styleUrl: './site-header.scss',
 })

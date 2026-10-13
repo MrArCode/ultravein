@@ -31,16 +31,21 @@
       aria-label="Menu główne"
     >
       <ul class="header__links">
-        @for (item of navItems; track item.fragment) {
+        @for (item of navItems; track item.path) {
           <li>
-            <a routerLink="/" [fragment]="item.fragment" (click)="closeMenu()">{{ item.label }}</a>
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="is-active"
+              ariaCurrentWhenActive="page"
+              (click)="closeMenu()"
+              >{{ item.label }}</a
+            >
           </li>
         }
       </ul>
       <a
         class="uv-button uv-button--primary header__cta"
-        routerLink="/"
-        fragment="terminy"
+        routerLink="/terminarz"
         (click)="closeMenu()"
       >
         Zapisz się na kurs

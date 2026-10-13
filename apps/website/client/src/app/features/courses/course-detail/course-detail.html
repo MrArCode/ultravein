@@ -1,0 +1,192 @@
+@let course = program();
+@if (course) {
+  <uv-page-header
+    [eyebrow]="formatLabels[course.format]"
+    [title]="course.title"
+    [lead]="course.summary"
+  >
+    <img
+      uvPageHeaderAside
+      class="detail__photo"
+      [ngSrc]="course.image"
+      width="960"
+      height="720"
+      priority
+      alt=""
+    />
+  </uv-page-header>
+
+  <div class="uv-container detail">
+    <div class="detail__main">
+      <section class="detail__block" aria-labelledby="about-course">
+        <h2 id="about-course">O kursie</h2>
+        @for (paragraph of course.description; track $index) {
+          <p>{{ paragraph }}</p>
+        }
+      </section>
+
+      @if (course.audience.length) {
+        <section class="detail__block" aria-labelledby="audience">
+          <h2 id="audience">Dla kogo</h2>
+          <ul class="detail__checks">
+            @for (item of course.audience; track item) {
+              <li><uv-icon name="check" />{{ item }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (course.program.length || course.programPdfUrl) {
+        <section class="detail__block" aria-labelledby="program">
+          <h2 id="program">Program</h2>
+          @for (section of course.program; track $index) {
+            @if (section.title) {
+              <h3 class="detail__subheading">{{ section.title }}</h3>
+            }
+            <ol class="detail__program">
+              @for (item of section.items; track item) {
+                <li>{{ item }}</li>
+              }
+            </ol>
+          }
+          @if (course.programPdfUrl) {
+            <a class="uv-link-arrow" [href]="course.programPdfUrl" target="_blank" rel="noopener">
+              {{ course.program.length ? 'Program kursu w PDF' : 'Pobierz program kursu (PDF)' }}
+            </a>
+          }
+        </section>
+      }
+
+      @if (instructors().length) {
+        <section class="detail__block" aria-labelledby="instructors">
+          <h2 id="instructors">Prowadzący</h2>
+          <ul class="detail__instructors">
+            @for (instructor of instructors(); track instructor.name) {
+              <li class="instructor">
+                @if (instructor.photo) {
+                  <img [ngSrc]="instructor.photo" width="480" height="600" alt="" />
+                } @else {
+                  <span class="instructor__placeholder" aria-hidden="true"
+                    ><uv-icon name="users"
+                  /></span>
+                }
+                <span class="instructor__text">
+                  <span class="instructor__name">{{ instructor.name }}</span>
+                  @if (instructor.role) {
+                    <span class="instructor__role">{{ instructor.role }}</span>
+                  }
+                </span>
+              </li>
+            }
+          </ul>
+          <a class="uv-link-arrow" routerLink="/zespol">Poznaj cały zespół</a>
+        </section>
+      }
+    </div>
+
+    <aside class="detail__aside">
+      <div class="facts uv-surface">
+        <p class="facts__status">
+          <span
+            class="uv-pill"
+            [class.uv-pill--info]="course.availability === 'open'"
+            [class.uv-pill--muted]="course.availability !== 'open'"
+          >
+            {{ availabilityLabels[course.availability] }}
+          </span>
+        </p>
+
+        <dl class="facts__list">
+          <div class="facts__row">
+            <dt><uv-icon name="calendar" />Termin</dt>
+            <dd>
+              @if (nextEdition(); as edition) {
+                <span class="facts__date">{{ edition.date | date: 'd MMMM y' }}</span>
+                <span class="facts__sub"
+                  >{{ edition.date | date: 'EEEE' }}, {{ edition.timeRange }}</span
+                >
+              } @else if (course.format === 'in-house') {
+                Ustalany indywidualnie
+              } @else {
+                Wkrótce
+              }
+            </dd>
+          </div>
+          <div class="facts__row">
+            <dt><uv-icon name="clock" />Czas trwania</dt>
+            <dd>{{ course.durationNote }}</dd>
+          </div>
+          <div class="facts__row">
+            <dt><uv-icon [name]="formatIcons[course.format]" />Miejsce</dt>
+            <dd>
+              @if (nextEdition(); as edition) {
+                {{ edition.location }}
+              } @else if (course.format === 'online') {
+                On-line na żywo
+              } @else if (course.format === 'in-house') {
+                W Twojej placówce
+              } @else {
+                Warszawa
+              }
+            </dd>
+          </div>
+          @if (course.educationalPoints) {
+            <div class="facts__row">
+              <dt><uv-icon name="check" />Punkty edukacyjne</dt>
+              <dd>{{ course.educationalPoints }} pkt NRPiP</dd>
+            </div>
+          }
+        </dl>
+
+        <p class="facts__price">
+          @if (course.pricePln !== null) {
+            {{ course.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
+            <span class="facts__sub">za osobę</span>
+          } @else {
+            {{ course.priceNote }}
+          }
+        </p>
+
+        @if (course.included.length) {
+          <ul class="facts__included">
+            @for (item of course.included; track item) {
+              <li><uv-icon name="check" />{{ item }}</li>
+            }
+          </ul>
+        }
+
+        @if (callToAction(); as cta) {
+          @if (cta.href) {
+            <a class="uv-button uv-button--primary facts__cta" [href]="cta.href" rel="noopener">
+              {{ cta.label }}
+            </a>
+          } @else {
+            <a
+              class="uv-button uv-button--primary facts__cta"
+              [routerLink]="cta.route"
+              [fragment]="cta.fragment ?? undefined"
+            >
+              {{ cta.label }}
+            </a>
+          }
+          <p class="facts__hint">{{ cta.hint }}</p>
+        }
+
+        @if (course.format !== 'in-house') {
+          <p class="facts__terms">
+            Zapisując się, akceptujesz <a routerLink="/regulamin">warunki uczestnictwa</a>.
+          </p>
+        }
+      </div>
+    </aside>
+  </div>
+} @else {
+  <uv-page-header
+    eyebrow="Błąd 404"
+    title="Nie znaleziono kursu"
+    lead="Kurs o tym adresie nie istnieje albo został usunięty z oferty."
+  />
+  <div class="uv-container uv-section">
+    <a class="uv-button uv-button--secondary" routerLink="/kursy">Zobacz wszystkie kursy</a>
+  </div>
+}

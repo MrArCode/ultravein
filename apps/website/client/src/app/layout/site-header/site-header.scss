@@ -93,13 +93,14 @@
     font-weight: 500;
     text-decoration: none;
 
-    &:hover {
+    &:hover,
+    &.is-active {
       color: var(--uv-color-blue);
     }
   }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1080px) {
   .header__toggle {
     display: block;
   }

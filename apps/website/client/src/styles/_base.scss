@@ -233,6 +233,128 @@ a:hover {
   }
 }
 
+// Small status label: info (blue) for highlights, muted for neutral states.
+.uv-pill {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: var(--uv-radius-sm);
+  font-size: var(--uv-text-sm);
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.uv-pill--info {
+  background: var(--uv-color-blue-soft);
+  color: var(--uv-color-navy);
+}
+
+.uv-pill--muted {
+  background: var(--uv-color-surface-alt);
+  color: var(--uv-color-muted);
+}
+
+// Chip row used for filters; the pressed chip is filled.
+.uv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uv-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--uv-color-line);
+  border-radius: var(--uv-radius-pill);
+  background: var(--uv-color-surface);
+  color: var(--uv-color-ink);
+  font-size: var(--uv-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    border-color: var(--uv-color-blue);
+    color: var(--uv-color-blue);
+  }
+}
+
+.uv-chip--active,
+.uv-chip[aria-pressed='true'] {
+  border-color: var(--uv-color-navy);
+  background: var(--uv-color-navy);
+  color: #fff;
+
+  &:hover {
+    border-color: var(--uv-color-navy);
+    color: #fff;
+  }
+}
+
+// Form controls share one look across the contact and inquiry forms.
+.uv-field {
+  display: grid;
+  gap: 0.4rem;
+
+  label {
+    color: var(--uv-color-ink);
+    font-size: var(--uv-text-sm);
+    font-weight: 600;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--uv-color-line);
+    border-radius: var(--uv-radius-md);
+    background: var(--uv-color-surface);
+    color: var(--uv-color-ink);
+    font: inherit;
+
+    &:focus-visible {
+      border-color: var(--uv-color-blue);
+      outline: 3px solid var(--uv-color-blue-soft);
+      outline-offset: 0;
+    }
+  }
+
+  textarea {
+    min-height: 8rem;
+    resize: vertical;
+  }
+}
+
+.uv-prose {
+  display: grid;
+  gap: 1rem;
+  max-width: 44rem;
+
+  h2 {
+    margin-top: 1rem;
+    font-size: var(--uv-text-xl);
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding-left: 1.4rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+}
+
 .uv-go {
   display: grid;
   flex: none;

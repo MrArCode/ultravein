@@ -1,0 +1,83 @@
+<uv-page-header
+  eyebrow="Kontakt"
+  title="Napisz do nas"
+  lead="Pytania o kursy, terminy, faktury dla pracodawcy albo szkolenie w placówce. Odpowiadamy zwykle w ciągu kilku dni roboczych."
+/>
+
+<section class="uv-section" aria-labelledby="contact-title">
+  <div class="uv-container contact">
+    <h2 id="contact-title" class="uv-visually-hidden">Dane kontaktowe i formularz</h2>
+
+    <div class="contact__details">
+      <ul class="contact__list">
+        <li>
+          <uv-icon name="phone" />
+          <span
+            ><span class="contact__label">Telefon</span
+            ><a [href]="company.phoneHref">{{ company.phone }}</a></span
+          >
+        </li>
+        <li>
+          <uv-icon name="mail" />
+          <span
+            ><span class="contact__label">E-mail</span
+            ><a href="mailto:{{ company.email }}">{{ company.email }}</a></span
+          >
+        </li>
+        <li>
+          <uv-icon name="building" />
+          <span>
+            <span class="contact__label">Adres</span>
+            {{ company.name }}<br />{{ company.street }}<br />{{ company.city }}
+          </span>
+        </li>
+        <li>
+          <uv-icon name="map-pin" />
+          <span>
+            <span class="contact__label">Kursy stacjonarne</span>
+            Warszawa. Dokładny adres sali podajemy w potwierdzeniu zapisu.
+          </span>
+        </li>
+      </ul>
+
+      <ul class="contact__social">
+        <li><a [href]="company.facebookUrl" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a [href]="company.instagramUrl" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+
+      <p class="contact__hint">
+        Szukasz szkolenia dla całego zespołu?
+        <a routerLink="/dla-placowek" fragment="zapytanie">Wypełnij zapytanie dla placówek</a>.
+      </p>
+    </div>
+
+    <form class="contact__form uv-surface" (submit)="submitMessage($event)">
+      <div class="uv-field">
+        <label for="name">Imię i nazwisko</label>
+        <input id="name" name="name" type="text" required autocomplete="name" />
+      </div>
+      <div class="uv-field">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" required autocomplete="email" />
+      </div>
+      <div class="uv-field">
+        <label for="subject">Temat</label>
+        <input id="subject" name="subject" type="text" required />
+      </div>
+      <div class="uv-field">
+        <label for="message">Wiadomość</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <div class="contact__actions">
+        <button type="submit" class="uv-button uv-button--primary">Wyślij wiadomość</button>
+        <p class="contact__note">
+          @if (handedOver()) {
+            Otworzyliśmy wiadomość w Twoim programie pocztowym. Wyślij ją, a odezwiemy się.
+          } @else {
+            Formularz przygotuje wiadomość w Twoim programie pocztowym.
+          }
+        </p>
+      </div>
+    </form>
+  </div>
+</section>

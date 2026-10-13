@@ -1,0 +1,39 @@
+.publications__filters {
+  margin-bottom: 2.5rem;
+}
+
+.year {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1rem 2rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--uv-color-line);
+}
+
+.year__title {
+  color: var(--uv-color-navy);
+  font-size: var(--uv-text-2xl);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.year__list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 52rem;
+}
+
+.year__item {
+  color: var(--uv-color-text);
+  line-height: 1.55;
+}
+
+@media (max-width: 680px) {
+  .year {
+    grid-template-columns: 1fr;
+  }
+}

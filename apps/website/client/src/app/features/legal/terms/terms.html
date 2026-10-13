@@ -1,0 +1,52 @@
+<uv-page-header
+  eyebrow="Informacje"
+  title="Warunki uczestnictwa"
+  lead="Zasady zgłoszenia, płatności i rezygnacji obowiązujące na kursach stacjonarnych i on-line."
+/>
+
+<div class="uv-container uv-section">
+  <div class="uv-prose">
+    <h2>Zgłoszenie</h2>
+    <p>
+      Warunkiem uczestnictwa w szkoleniu jest wysłanie zgłoszenia za pośrednictwem formularza
+      dostępnego na stronie kursu, poprzez prawidłowe wypełnienie wszystkich wymaganych pól
+      formularza i wysłanie go do Organizatora drogą elektroniczną.
+    </p>
+
+    <h2>Płatność</h2>
+    <p>
+      Opłatę za szkolenie w wysokości podanej przez Organizatora należy wnieść na rachunek bankowy
+      wskazany w potwierdzeniu zapisu, z dopiskiem: data szkolenia oraz imię i nazwisko Uczestnika.
+    </p>
+    <p>
+      Opłaty należy dokonać w ciągu 5 dni od rejestracji na wydarzenie i otrzymania od Organizatora
+      potwierdzenia zapisu.
+    </p>
+
+    <h2>Rezygnacja z uczestnictwa</h2>
+    <p>
+      Uczestnik może zrezygnować z uczestnictwa w szkoleniu przed jego rozpoczęciem. Rezygnację
+      należy przesłać pocztą elektroniczną na adres
+      <a href="mailto:{{ company.email }}">{{ company.email }}</a
+      >.
+    </p>
+    <ul>
+      <li>
+        Jeśli Organizator otrzyma oświadczenie o rezygnacji wcześniej niż 14 dni przed rozpoczęciem
+        wydarzenia, zwróci Uczestnikowi wpłaconą kwotę.
+      </li>
+      <li>
+        Jeśli Organizator otrzyma oświadczenie później, a także kiedy Uczestnik nie poinformuje
+        Organizatora o rezygnacji, Organizator zwróci 50% wpłaconej kwoty.
+      </li>
+      <li>
+        Jeśli Organizator otrzyma oświadczenie później niż 3 dni przed planowanym wydarzeniem,
+        Organizator ma prawo zatrzymać wpłaconą kwotę.
+      </li>
+    </ul>
+
+    <h2>Organizator</h2>
+    <p>{{ company.name }}, {{ company.street }}, {{ company.city }}.</p>
+    <p>Masz pytania o warunki? <a routerLink="/kontakt">Napisz do nas</a>.</p>
+  </div>
+</div>

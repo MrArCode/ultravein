@@ -1,0 +1,31 @@
+@let item = program();
+<article class="card uv-surface uv-clickable">
+  <img class="card__image" [ngSrc]="item.image" width="960" height="720" alt="" />
+  <div class="card__body">
+    <p class="card__format" [class.card__format--online]="item.format === 'online'">
+      <uv-icon [name]="formatIcons[item.format]" />
+      {{ formatLabels[item.format] }}
+    </p>
+    <h3 class="card__title">
+      <a class="uv-cover-link" [routerLink]="['/kursy', item.slug]">{{ item.title }}</a>
+    </h3>
+    <p class="card__summary">{{ item.summary }}</p>
+    <p class="card__footer">
+      <span class="card__price">
+        @if (item.pricePln !== null) {
+          {{ item.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
+        } @else {
+          {{ item.priceNote }}
+        }
+      </span>
+      <span
+        class="uv-pill"
+        [class.uv-pill--info]="item.availability === 'open'"
+        [class.uv-pill--muted]="item.availability !== 'open'"
+      >
+        {{ availabilityLabels[item.availability] }}
+      </span>
+      <span class="uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
+    </p>
+  </div>
+</article>

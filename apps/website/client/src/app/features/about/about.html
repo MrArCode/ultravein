@@ -1,0 +1,52 @@
+<uv-page-header
+  eyebrow="O nas"
+  title="Globalne standardy. Lokalna praktyka."
+  lead="UltraVein to inicjatywa szkoleniowa skoncentrowana na praktycznych aspektach dostępu naczyniowego i bezpiecznej terapii infuzyjnej. Nasze programy powstają w oparciu o aktualne międzynarodowe wytyczne i doświadczenie kliniczne."
+/>
+
+<div class="uv-container stories">
+  @for (story of stories; track story.title; let i = $index) {
+    <section
+      class="story"
+      [class.story--reverse]="i % 2 === 1"
+      [attr.aria-labelledby]="'story-' + i"
+    >
+      <div class="story__text">
+        <h2 [id]="'story-' + i">{{ story.title }}</h2>
+        @for (paragraph of story.paragraphs; track $index) {
+          <p>{{ paragraph }}</p>
+        }
+      </div>
+      @if (story.image) {
+        <img
+          class="story__image"
+          [ngSrc]="story.image"
+          width="960"
+          height="720"
+          [alt]="story.imageAlt"
+        />
+      }
+    </section>
+  }
+</div>
+
+<section class="uv-section uv-section--alt" aria-labelledby="partners-title">
+  <div class="uv-container">
+    <div class="uv-section-header">
+      <p class="uv-eyebrow">Współpraca</p>
+      <h2 id="partners-title">Z kim pracujemy</h2>
+    </div>
+    <ul class="partners">
+      @for (partner of partners; track partner.name) {
+        <li class="partner">
+          <h3>{{ partner.name }}</h3>
+          <p>{{ partner.description }}</p>
+        </li>
+      }
+    </ul>
+    <div class="about__links">
+      <a class="uv-link-arrow" routerLink="/zespol">Poznaj zespół</a>
+      <a class="uv-link-arrow" routerLink="/publikacje">Zobacz publikacje</a>
+    </div>
+  </div>
+</section>

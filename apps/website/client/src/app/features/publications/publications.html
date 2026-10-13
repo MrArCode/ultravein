@@ -1,0 +1,55 @@
+<uv-page-header
+  eyebrow="Nauka i praktyka"
+  title="Publikacje"
+  [lead]="
+    'Najważniejsze prace, których autorami są eksperci UltraVein: ' +
+    total +
+    ' pozycje z lat ' +
+    years[years.length - 1] +
+    '–' +
+    years[0] +
+    ', w tym artykuły, książki, rekomendacje i stanowiska towarzystw naukowych.'
+  "
+/>
+
+<section class="uv-section" aria-labelledby="publications-title">
+  <div class="uv-container">
+    <h2 id="publications-title" class="uv-visually-hidden">Lista publikacji</h2>
+
+    <ul class="uv-chips publications__filters" aria-label="Filtruj według roku">
+      <li>
+        <button
+          type="button"
+          class="uv-chip"
+          [attr.aria-pressed]="selectedYear() === null"
+          (click)="selectYear(null)"
+        >
+          Wszystkie
+        </button>
+      </li>
+      @for (year of years; track year) {
+        <li>
+          <button
+            type="button"
+            class="uv-chip"
+            [attr.aria-pressed]="selectedYear() === year"
+            (click)="selectYear(year)"
+          >
+            {{ year }}
+          </button>
+        </li>
+      }
+    </ul>
+
+    @for (group of groups(); track group.year) {
+      <section class="year" [attr.aria-labelledby]="'year-' + group.year">
+        <h3 class="year__title" [id]="'year-' + group.year">{{ group.year }}</h3>
+        <ol class="year__list">
+          @for (publication of group.items; track publication.citation) {
+            <li class="year__item">{{ publication.citation }}</li>
+          }
+        </ol>
+      </section>
+    }
+  </div>
+</section>

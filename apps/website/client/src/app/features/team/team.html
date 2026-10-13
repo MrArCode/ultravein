@@ -1,0 +1,75 @@
+<uv-page-header
+  eyebrow="Zespół"
+  title="Instruktorzy, którzy pozostają praktykami"
+  lead="Specjaliści pielęgniarstwa anestezjologicznego i intensywnej opieki, ratownicy medyczni i autorzy publikacji naukowych. Szkolimy z tego, co robimy na co dzień."
+/>
+
+<section class="uv-section" aria-labelledby="team-title">
+  <div class="uv-container">
+    <h2 id="team-title" class="uv-visually-hidden">Zarząd i instruktorzy</h2>
+
+    <ul class="team">
+      @for (profile of withPhoto; track profile.member.name) {
+        <li class="member">
+          <img
+            class="member__photo"
+            [ngSrc]="profile.member.photo ?? ''"
+            width="480"
+            height="600"
+            [alt]="profile.member.name"
+          />
+          <div class="member__body">
+            <h3 class="member__name">{{ profile.member.name }}</h3>
+            <p class="member__role">{{ profile.member.role }}</p>
+            <p class="member__credentials">{{ profile.member.credentials }}</p>
+            @if (profile.member.bio) {
+              <p class="member__bio">{{ profile.member.bio }}</p>
+            }
+            @if (profile.courses.length) {
+              <p class="member__courses-label">Prowadzi kursy</p>
+              <ul class="member__courses">
+                @for (course of profile.courses; track course.slug) {
+                  <li>
+                    <a [routerLink]="['/kursy', course.slug]">{{ course.title }}</a>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+@if (withoutPhoto.length) {
+  <section class="uv-section uv-section--alt" aria-labelledby="collab-title">
+    <div class="uv-container">
+      <div class="uv-section-header">
+        <p class="uv-eyebrow">Zespół instruktorski</p>
+        <h2 id="collab-title">Instruktorzy współpracujący</h2>
+      </div>
+      <ul class="collab">
+        @for (profile of withoutPhoto; track profile.member.name) {
+          <li class="collab__row">
+            <div class="collab__text">
+              <h3 class="member__name">{{ profile.member.name }}</h3>
+              @if (profile.member.credentials) {
+                <p class="member__credentials">{{ profile.member.credentials }}</p>
+              }
+            </div>
+            @if (profile.courses.length) {
+              <ul class="member__courses collab__courses">
+                @for (course of profile.courses; track course.slug) {
+                  <li>
+                    <a [routerLink]="['/kursy', course.slug]">{{ course.title }}</a>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+}

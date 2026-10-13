@@ -1,4 +1,4 @@
-<footer id="kontakt" class="footer">
+<footer class="footer">
   <div class="uv-container footer__grid">
     <div class="footer__brand">
       <img ngSrc="images/brand/logo-white.webp" width="560" height="72" alt="UltraVein" />
@@ -11,40 +11,39 @@
     <div>
       <h2 class="footer__title">Kontakt</h2>
       <address class="footer__list">
-        <span>UltraVein Sp. z o.o.</span>
-        <span>ul. Hoża 86/410, 00-682 Warszawa</span>
-        <a href="tel:+48512444885">+48 512 444 885</a>
-        <a href="mailto:ultravein@ultravein.pl">ultravein&#64;ultravein.pl</a>
+        <span>{{ company.name }}</span>
+        <span>{{ company.street }}, {{ company.city }}</span>
+        <a [href]="company.phoneHref">{{ company.phone }}</a>
+        <a href="mailto:{{ company.email }}">{{ company.email }}</a>
       </address>
     </div>
 
     <nav aria-label="Na skróty">
       <h2 class="footer__title">Na skróty</h2>
       <ul class="footer__list">
-        @for (item of navItems; track item.fragment) {
+        @for (item of navItems; track item.path) {
           <li>
-            <a routerLink="/" [fragment]="item.fragment">{{ item.label }}</a>
+            <a [routerLink]="item.path">{{ item.label }}</a>
           </li>
         }
       </ul>
     </nav>
 
-    <div>
-      <h2 class="footer__title">Obserwuj nas</h2>
+    <nav aria-label="Informacje">
+      <h2 class="footer__title">Informacje</h2>
       <ul class="footer__list">
-        <li>
-          <a href="https://www.facebook.com/ultravein.education/" target="_blank" rel="noopener"
-            >Facebook</a
-          >
-        </li>
-        <li>
-          <a href="https://www.instagram.com/ultravein" target="_blank" rel="noopener">Instagram</a>
-        </li>
+        @for (item of extraItems; track item.path) {
+          <li>
+            <a [routerLink]="item.path">{{ item.label }}</a>
+          </li>
+        }
+        <li><a [href]="company.facebookUrl" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a [href]="company.instagramUrl" target="_blank" rel="noopener">Instagram</a></li>
       </ul>
-    </div>
+    </nav>
   </div>
 
   <div class="uv-container footer__bottom">
-    <p>© {{ year }} UltraVein Sp. z o.o.</p>
+    <p>© {{ year }} {{ company.name }}</p>
   </div>
 </footer>

@@ -6,54 +6,9 @@
         <h2 id="courses-title">Najbliższe terminy</h2>
         <p>Kursy stacjonarne w Warszawie i kursy on-line na żywo.</p>
       </div>
-      <a class="uv-link-arrow" href="https://ultravein.pl/kursy/">Pełna oferta kursów</a>
+      <a class="uv-link-arrow" routerLink="/terminarz">Pełny terminarz</a>
     </div>
 
-    @for (group of months; track group.month) {
-      <div class="agenda__month">
-        <h3 class="agenda__month-title">
-          <span class="agenda__month-label">{{ group.firstDate | date: 'LLLL yyyy' }}</span>
-        </h3>
-        <ul class="agenda__list">
-          @for (course of group.courses; track course.id) {
-            <li class="row uv-clickable">
-              <p class="row__date">
-                <span class="row__day">{{ course.date | date: 'dd' }}</span>
-                <span class="row__weekday row__weekday--long">{{
-                  course.date | date: 'EEEE'
-                }}</span>
-                <span class="row__weekday row__weekday--short">{{
-                  course.date | date: 'EEE'
-                }}</span>
-              </p>
-
-              <div class="row__main">
-                <a class="row__title uv-cover-link" [href]="course.detailsUrl">
-                  {{ course.title }}<span class="uv-visually-hidden"> – szczegóły i zapisy</span>
-                </a>
-                <p class="row__meta">
-                  <span
-                    class="row__format"
-                    [class.row__format--online]="course.format === 'online'"
-                  >
-                    <uv-icon [name]="course.format === 'online' ? 'monitor' : 'map-pin'" />
-                    {{ course.format === 'online' ? formatLabels.online : course.location }}
-                  </span>
-                  <span>{{ course.timeRange }}</span>
-                  @if (course.educationalPoints) {
-                    <span class="row__points">{{ course.educationalPoints }} pkt NRPiP</span>
-                  }
-                </p>
-              </div>
-
-              <p class="row__price">
-                {{ course.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
-              </p>
-              <span class="row__go uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
-            </li>
-          }
-        </ul>
-      </div>
-    }
+    <uv-course-agenda [items]="items" />
   </div>
 </section>

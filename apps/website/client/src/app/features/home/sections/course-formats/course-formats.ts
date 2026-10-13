@@ -1,5 +1,6 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Icon } from '../../../../shared/ui/icon/icon';
 
 /** One of the ways a training can be delivered. */
@@ -11,12 +12,14 @@ interface CourseFormatOffer {
   readonly imageAlt: string;
   readonly imageWidth: number;
   readonly imageHeight: number;
-  readonly linkUrl: string;
+  readonly linkPath: string;
+  /** Value of the "forma" query parameter of the catalog, or null for a page without a filter. */
+  readonly linkFormat: string | null;
 }
 
 @Component({
   selector: 'uv-course-formats',
-  imports: [Icon, NgOptimizedImage],
+  imports: [Icon, NgOptimizedImage, RouterLink],
   templateUrl: './course-formats.html',
   styleUrl: './course-formats.scss',
 })
@@ -31,7 +34,8 @@ export class CourseFormats {
       imageAlt: 'Uczestnicy warsztatów stacjonarnych przy stanowiskach ćwiczeniowych',
       imageWidth: 800,
       imageHeight: 600,
-      linkUrl: 'https://ultravein.pl/oferta-kursow/',
+      linkPath: '/kursy',
+      linkFormat: 'stacjonarne',
     },
     {
       title: 'Kursy on-line na żywo',
@@ -42,7 +46,8 @@ export class CourseFormats {
       imageAlt: 'Praca z materiałami szkoleniowymi na laptopie',
       imageWidth: 800,
       imageHeight: 600,
-      linkUrl: 'https://ultravein.pl/kursy-on-line/',
+      linkPath: '/kursy',
+      linkFormat: 'online',
     },
     {
       title: 'Szkolenia w Twojej placówce',
@@ -53,7 +58,8 @@ export class CourseFormats {
       imageAlt: 'Personel w strojach operacyjnych podczas procedury w szpitalu',
       imageWidth: 672,
       imageHeight: 504,
-      linkUrl: 'https://ultravein.pl/midline-basic-cewniki-posrednie-w-praktyce/',
+      linkPath: '/dla-placowek',
+      linkFormat: null,
     },
   ];
 }

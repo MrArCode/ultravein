@@ -21,7 +21,12 @@
           />
           <div class="format__body">
             <h3 class="format__title">
-              <a class="uv-cover-link" [href]="offer.linkUrl">{{ offer.title }}</a>
+              <a
+                class="uv-cover-link"
+                [routerLink]="offer.linkPath"
+                [queryParams]="offer.linkFormat ? { forma: offer.linkFormat } : null"
+                >{{ offer.title }}</a
+              >
             </h3>
             <p>{{ offer.description }}</p>
             <p class="format__footer">

@@ -1,4 +1,4 @@
-<section id="dla-placowek" class="uv-section cta" aria-labelledby="cta-title">
+<section class="uv-section cta" aria-labelledby="cta-title">
   <div class="uv-container">
     <div class="cta__panel">
       <div class="cta__text">
@@ -10,8 +10,10 @@
         </p>
       </div>
       <div class="cta__actions">
-        <a class="uv-button uv-button--light" [href]="inquiryMailto">Zapytaj o szkolenie</a>
-        <a class="cta__phone" href="tel:+48512444885">lub zadzwoń: +48 512 444 885</a>
+        <a class="uv-button uv-button--light" routerLink="/dla-placowek" fragment="zapytanie">
+          Zapytaj o szkolenie
+        </a>
+        <a class="cta__phone" [href]="company.phoneHref">lub zadzwoń: {{ company.phone }}</a>
       </div>
     </div>
   </div>
