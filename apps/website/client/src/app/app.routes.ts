@@ -73,6 +73,12 @@ export const routes: Routes = [
     title: `Polityka prywatności – ${SITE_NAME}`,
     loadComponent: () => import('./features/legal/privacy/privacy').then((m) => m.Privacy),
   },
+  // Prerendered copy of the "not found" page, published as 404.html on static hosting.
+  {
+    path: 'nie-znaleziono',
+    title: `Nie znaleziono strony – ${SITE_NAME}`,
+    loadComponent: () => import('./features/not-found/not-found').then((m) => m.NotFound),
+  },
   {
     path: '**',
     title: `Nie znaleziono strony – ${SITE_NAME}`,

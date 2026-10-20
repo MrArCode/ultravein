@@ -47,6 +47,12 @@ The prerendered static site is written to `dist/ultravein-website/browser/` and 
 - `src/app/core/services/` – `CoursesService` (catalog and calendar) and `PageMetaService`.
 - `public/images/` – optimized WebP photos and logos.
 
+## Deployment
+
+The workflow `.github/workflows/website-pages.yml` builds the site with `--base-href /<repository>/` and publishes `dist/ultravein-website/browser/` to GitHub Pages on every push to `main` that touches `apps/website/client/`. The prerendered `nie-znaleziono` page is copied to `404.html`, and a `robots.txt` blocks indexing of this preview.
+
+GitHub Pages is available free of charge only for public repositories; a private repository needs a paid GitHub plan or another static host (for example Cloudflare Pages). For a custom domain, build with `--base-href /` and add a `CNAME` file to `public/`.
+
 ## Notes
 
 - Fonts (Inter, Outfit) are self-hosted through `@fontsource-variable` packages, so the site makes no requests to Google Fonts.

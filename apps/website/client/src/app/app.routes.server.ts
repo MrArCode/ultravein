@@ -14,6 +14,7 @@ const STATIC_PATHS: readonly string[] = [
   'kontakt',
   'regulamin',
   'polityka-prywatnosci',
+  'nie-znaleziono',
 ];
 
 export const serverRoutes: ServerRoute[] = [

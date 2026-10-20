@@ -1,0 +1,71 @@
+name: Website – GitHub Pages
+
+# Builds the prerendered website and publishes it to GitHub Pages
+# at https://<owner>.github.io/<repository>/ whenever the website changes on main.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/website/client/**'
+      - '.github/workflows/website-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: website-pages
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: apps/website/client
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Enables GitHub Pages for the repository on first run (requires a plan that offers Pages for this repository).
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/website/client/package-lock.json
+
+      - run: npm ci
+
+      - run: npm test -- --watch=false
+
+      # The project site lives under /<repository>/, so links and assets need that base path.
+      - run: npx ng build --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Prepare static output for Pages
+        run: |
+          cd dist/ultravein-website/browser
+          # GitHub Pages serves 404.html for unknown addresses.
+          cp nie-znaleziono/index.html 404.html
+          # The preview must not compete with the production site in search engines.
+          printf 'User-agent: *\nDisallow: /\n' > robots.txt
+          touch .nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/website/client/dist/ultravein-website/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
