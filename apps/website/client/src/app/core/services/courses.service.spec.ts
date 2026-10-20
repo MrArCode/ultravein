@@ -1,12 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { AgendaItem, CourseProgram } from '../models/course';
+import { AgendaItem, CourseAvailability, CourseProgram } from '../models/course';
+import { Clock } from './clock';
 import { CoursesService } from './courses.service';
+
+/** Clock with a date the tests can move. */
+class FakeClock {
+  date: string = '2026-10-13';
+
+  today(): string {
+    return this.date;
+  }
+}
 
 describe('CoursesService', () => {
   let service: CoursesService;
+  let clock: FakeClock;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    clock = new FakeClock();
+    TestBed.configureTestingModule({ providers: [{ provide: Clock, useValue: clock }] });
     service = TestBed.inject(CoursesService);
   });
 
@@ -32,7 +44,7 @@ describe('CoursesService', () => {
     expect(program).toBeUndefined();
   });
 
-  it('getAgenda_WhenCalled_ReturnsEditionsJoinedWithCoursesInDateOrder', () => {
+  it('getAgenda_WhenAllEditionsAreAhead_ReturnsEditionsJoinedWithCoursesInDateOrder', () => {
     // arrange
     const expectedOrder: string[] = ['2026-11-07', '2026-12-02', '2026-12-14', '2027-02-20'];
 
@@ -44,6 +56,31 @@ describe('CoursesService', () => {
     for (const item of agenda) {
       expect(item.program.slug).toBe(item.edition.courseSlug);
     }
+  });
+
+  it('getAgenda_WhenSomeEditionsHavePassed_ExcludesThem', () => {
+    // arrange
+    clock.date = '2026-12-10';
+
+    // act
+    const agenda: readonly AgendaItem[] = service.getAgenda();
+
+    // assert
+    expect(agenda.map((item: AgendaItem) => item.edition.date)).toEqual([
+      '2026-12-14',
+      '2027-02-20',
+    ]);
+  });
+
+  it('getAgenda_WhenEditionIsToday_StillIncludesIt', () => {
+    // arrange
+    clock.date = '2026-11-07';
+
+    // act
+    const agenda: readonly AgendaItem[] = service.getAgenda();
+
+    // assert
+    expect(agenda[0].edition.date).toBe('2026-11-07');
   });
 
   it('getProgramsByFormat_WhenFormatIsNull_ReturnsAllCourses', () => {
@@ -72,6 +109,40 @@ describe('CoursesService', () => {
       expect(scheduledSlugs).not.toContain(program.slug);
       expect(program.format).not.toBe('in-house');
     }
+  });
+
+  it('getProgramsAwaitingDate_WhenCourseEditionHasPassed_IncludesThatCourse', () => {
+    // arrange
+    clock.date = '2026-11-08';
+
+    // act
+    const awaiting: readonly CourseProgram[] = service.getProgramsAwaitingDate();
+
+    // assert
+    expect(awaiting.map((program: CourseProgram) => program.slug)).toContain('ratowac-czy-usuwac');
+  });
+
+  it('getAvailability_WhenOpenCourseHasUpcomingEdition_ReturnsOpen', () => {
+    // arrange
+    const program: CourseProgram = service.getProgram('iv-pro-kaniulacja-naczyn-obwodowych')!;
+
+    // act
+    const availability: CourseAvailability = service.getAvailability(program);
+
+    // assert
+    expect(availability).toBe('open');
+  });
+
+  it('getAvailability_WhenOpenCourseEditionHasPassed_ReturnsPlanned', () => {
+    // arrange
+    clock.date = '2027-03-01';
+    const program: CourseProgram = service.getProgram('iv-pro-kaniulacja-naczyn-obwodowych')!;
+
+    // act
+    const availability: CourseAvailability = service.getAvailability(program);
+
+    // assert
+    expect(availability).toBe('planned');
   });
 
   it('getProgramsTaughtBy_WhenInstructorTeaches_ReturnsOnlyTheirCourses', () => {

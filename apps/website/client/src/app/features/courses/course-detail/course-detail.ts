@@ -1,7 +1,15 @@
 import { CurrencyPipe, DatePipe, NgOptimizedImage } from '@angular/common';
-import { Component, computed, effect, inject, input, InputSignal, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  InputSignal,
+  RESPONSE_INIT,
+  Signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { COMPANY } from '../../../core/data/company.data';
 import { TEAM_MEMBERS } from '../../../core/data/team.data';
 import {
   COURSE_AVAILABILITY_LABELS,
@@ -14,7 +22,8 @@ import {
 import { TeamMember } from '../../../core/models/team-member';
 import { CoursesService } from '../../../core/services/courses.service';
 import { PageMetaService } from '../../../core/services/page-meta.service';
-import { buildMailto } from '../../../core/utils/mailto';
+import { buildNotifyMailto, buildWaitlistMailto } from '../../../core/utils/course-mailto';
+import { COURSE_FORMAT_ICONS } from '../../../shared/ui/icon/course-format-icons';
 import { Icon, IconName } from '../../../shared/ui/icon/icon';
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
 
@@ -35,11 +44,8 @@ interface Instructor {
   readonly photo: string | null;
 }
 
-const FORMAT_ICONS: Readonly<Record<CourseFormat, IconName>> = {
-  stationary: 'map-pin',
-  online: 'monitor',
-  'in-house': 'building',
-};
+const NOT_FOUND_DESCRIPTION: string =
+  'Kurs o tym adresie nie istnieje albo został usunięty z oferty.';
 
 @Component({
   selector: 'uv-course-detail',
@@ -53,6 +59,8 @@ export class CourseDetail {
 
   private readonly courses: CoursesService = inject(CoursesService);
   private readonly pageMeta: PageMetaService = inject(PageMetaService);
+  /** Response being prepared on the server; null in the browser. */
+  private readonly responseInit: ResponseInit | null = inject(RESPONSE_INIT, { optional: true });
 
   protected readonly program: Signal<CourseProgram | undefined> = computed(() =>
     this.courses.getProgram(this.slug()),
@@ -61,6 +69,11 @@ export class CourseDetail {
   protected readonly nextEdition: Signal<CourseEdition | null> = computed(
     () => this.courses.getEditionsOf(this.slug())[0] ?? null,
   );
+
+  protected readonly availability: Signal<CourseAvailability> = computed(() => {
+    const program: CourseProgram | undefined = this.program();
+    return program === undefined ? 'planned' : this.courses.getAvailability(program);
+  });
 
   protected readonly instructors: Signal<readonly Instructor[]> = computed(() => {
     const program: CourseProgram | undefined = this.program();
@@ -77,11 +90,12 @@ export class CourseDetail {
 
   protected readonly callToAction: Signal<CallToAction | null> = computed(() => {
     const program: CourseProgram | undefined = this.program();
-    return program === undefined ? null : buildCallToAction(program);
+    return program === undefined ? null : buildCallToAction(program, this.availability());
   });
 
+  protected readonly notFoundDescription: string = NOT_FOUND_DESCRIPTION;
   protected readonly formatLabels: Readonly<Record<CourseFormat, string>> = COURSE_FORMAT_LABELS;
-  protected readonly formatIcons: Readonly<Record<CourseFormat, IconName>> = FORMAT_ICONS;
+  protected readonly formatIcons: Readonly<Record<CourseFormat, IconName>> = COURSE_FORMAT_ICONS;
   protected readonly availabilityLabels: Readonly<Record<CourseAvailability, string>> =
     COURSE_AVAILABILITY_LABELS;
 
@@ -90,13 +104,18 @@ export class CourseDetail {
       const program: CourseProgram | undefined = this.program();
       if (program !== undefined) {
         this.pageMeta.setDescription(program.summary);
+        return;
+      }
+      this.pageMeta.setDescription(NOT_FOUND_DESCRIPTION);
+      if (this.responseInit !== null) {
+        this.responseInit.status = 404;
       }
     });
   }
 }
 
-function buildCallToAction(program: CourseProgram): CallToAction {
-  switch (program.availability) {
+function buildCallToAction(program: CourseProgram, availability: CourseAvailability): CallToAction {
+  switch (availability) {
     case 'open':
       return {
         label: 'Zapisz się na kurs',
@@ -109,11 +128,7 @@ function buildCallToAction(program: CourseProgram): CallToAction {
       return {
         label: 'Powiadom mnie o terminie',
         hint: 'Termin kolejnej edycji ogłosimy wkrótce. Zostaw e-mail, a damy znać jako pierwszym.',
-        href: buildMailto(
-          COMPANY.email,
-          `Termin kursu: ${program.title}`,
-          'Proszę o informację o najbliższym terminie kursu.',
-        ),
+        href: buildNotifyMailto(program),
         route: null,
         fragment: null,
       };
@@ -121,11 +136,7 @@ function buildCallToAction(program: CourseProgram): CallToAction {
       return {
         label: 'Zapisz się na listę rezerwową',
         hint: 'Miejsca na najbliższy termin są wyczerpane. Napisz do nas, a odezwiemy się, gdy zwolni się miejsce.',
-        href: buildMailto(
-          COMPANY.email,
-          `Lista rezerwowa: ${program.title}`,
-          'Proszę o wpisanie na listę rezerwową.',
-        ),
+        href: buildWaitlistMailto(program),
         route: null,
         fragment: null,
       };

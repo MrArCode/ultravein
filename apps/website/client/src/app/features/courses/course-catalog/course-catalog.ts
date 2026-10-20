@@ -3,6 +3,10 @@ import { RouterLink } from '@angular/router';
 import { CourseFormat, CourseProgram } from '../../../core/models/course';
 import { CoursesService } from '../../../core/services/courses.service';
 import { PageMetaService } from '../../../core/services/page-meta.service';
+import {
+  COURSE_FORMAT_PARAMS,
+  parseCourseFormatParam,
+} from '../../../core/utils/course-format-param';
 import { CourseCard } from '../../../shared/ui/course-card/course-card';
 import { PageHeader } from '../../../shared/ui/page-header/page-header';
 
@@ -11,13 +15,6 @@ interface FormatFilter {
   readonly label: string;
   readonly param: string | null;
 }
-
-/** Maps the "forma" query parameter to a course format. */
-export const FORMAT_PARAMS: Readonly<Record<string, CourseFormat>> = {
-  stacjonarne: 'stationary',
-  online: 'online',
-  'w-placowce': 'in-house',
-};
 
 @Component({
   selector: 'uv-course-catalog',
@@ -33,20 +30,24 @@ export class CourseCatalog {
 
   protected readonly filters: readonly FormatFilter[] = [
     { label: 'Wszystkie', param: null },
-    { label: 'Stacjonarne', param: 'stacjonarne' },
-    { label: 'On-line', param: 'online' },
-    { label: 'W placówce', param: 'w-placowce' },
+    { label: 'Stacjonarne', param: COURSE_FORMAT_PARAMS.stationary },
+    { label: 'On-line', param: COURSE_FORMAT_PARAMS.online },
+    { label: 'W placówce', param: COURSE_FORMAT_PARAMS['in-house'] },
   ];
 
+  protected readonly activeFormat: Signal<CourseFormat | null> = computed(() =>
+    parseCourseFormatParam(this.forma()),
+  );
+
+  /** The "forma" value of the active filter, or null when all courses are shown. */
   protected readonly activeParam: Signal<string | null> = computed(() => {
-    const param: string | undefined = this.forma();
-    return param !== undefined && param in FORMAT_PARAMS ? param : null;
+    const format: CourseFormat | null = this.activeFormat();
+    return format === null ? null : COURSE_FORMAT_PARAMS[format];
   });
 
-  protected readonly programs: Signal<readonly CourseProgram[]> = computed(() => {
-    const param: string | null = this.activeParam();
-    return this.courses.getProgramsByFormat(param === null ? null : FORMAT_PARAMS[param]);
-  });
+  protected readonly programs: Signal<readonly CourseProgram[]> = computed(() =>
+    this.courses.getProgramsByFormat(this.activeFormat()),
+  );
 
   constructor() {
     inject(PageMetaService).setDescription(

@@ -20,10 +20,10 @@
       </span>
       <span
         class="uv-pill"
-        [class.uv-pill--info]="item.availability === 'open'"
-        [class.uv-pill--muted]="item.availability !== 'open'"
+        [class.uv-pill--info]="availability() === 'open'"
+        [class.uv-pill--muted]="availability() !== 'open'"
       >
-        {{ availabilityLabels[item.availability] }}
+        {{ availabilityLabels[availability()] }}
       </span>
       <span class="uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
     </p>

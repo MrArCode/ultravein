@@ -38,7 +38,11 @@
           </div>
 
           <p class="row__price">
-            {{ item.program.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
+            @if (item.program.pricePln !== null) {
+              {{ item.program.pricePln | currency: 'PLN' : 'symbol-narrow' : '1.0-0' }}
+            } @else {
+              {{ item.program.priceNote }}
+            }
           </p>
           <span class="row__go uv-go" aria-hidden="true"><uv-icon name="arrow-right" /></span>
         </li>

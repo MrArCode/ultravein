@@ -89,10 +89,10 @@
         <p class="facts__status">
           <span
             class="uv-pill"
-            [class.uv-pill--info]="course.availability === 'open'"
-            [class.uv-pill--muted]="course.availability !== 'open'"
+            [class.uv-pill--info]="availability() === 'open'"
+            [class.uv-pill--muted]="availability() !== 'open'"
           >
-            {{ availabilityLabels[course.availability] }}
+            {{ availabilityLabels[availability()] }}
           </span>
         </p>
 
@@ -181,11 +181,7 @@
     </aside>
   </div>
 } @else {
-  <uv-page-header
-    eyebrow="Błąd 404"
-    title="Nie znaleziono kursu"
-    lead="Kurs o tym adresie nie istnieje albo został usunięty z oferty."
-  />
+  <uv-page-header eyebrow="Błąd 404" title="Nie znaleziono kursu" [lead]="notFoundDescription" />
   <div class="uv-container uv-section">
     <a class="uv-button uv-button--secondary" routerLink="/kursy">Zobacz wszystkie kursy</a>
   </div>

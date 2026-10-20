@@ -16,7 +16,9 @@ import { Component, input, InputSignal } from '@angular/core';
           }
           <ng-content />
         </div>
-        <ng-content select="[uvPageHeaderAside]" />
+        <div class="band__aside">
+          <ng-content select="[uvPageHeaderAside]" />
+        </div>
       </div>
     </div>
   `,
@@ -47,6 +49,16 @@ import { Component, input, InputSignal } from '@angular/core';
     .band__lead {
       color: var(--uv-color-muted);
       font-size: var(--uv-text-lg);
+    }
+
+    // Caps the aside column so a large image never squeezes the text column.
+    .band__aside {
+      width: 100%;
+      max-width: 22rem;
+    }
+
+    .band__aside:empty {
+      display: none;
     }
 
     @media (max-width: 860px) {

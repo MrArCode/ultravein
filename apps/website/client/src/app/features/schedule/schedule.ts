@@ -1,13 +1,14 @@
 import { Component, computed, inject, input, InputSignal, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { COMPANY } from '../../core/data/company.data';
 import { AgendaItem, CourseFormat, CourseProgram } from '../../core/models/course';
 import { CoursesService } from '../../core/services/courses.service';
 import { PageMetaService } from '../../core/services/page-meta.service';
-import { buildMailto } from '../../core/utils/mailto';
+import { COURSE_FORMAT_PARAMS, parseCourseFormatParam } from '../../core/utils/course-format-param';
+import { buildNotifyMailto } from '../../core/utils/course-mailto';
 import { CourseAgenda } from '../../shared/ui/course-agenda/course-agenda';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 
+/** A filter chip above the calendar; the param is the value of the "forma" query parameter. */
 interface FormatFilter {
   readonly label: string;
   readonly param: string | null;
@@ -34,15 +35,14 @@ export class Schedule {
 
   protected readonly filters: readonly FormatFilter[] = [
     { label: 'Wszystkie', param: null, format: null },
-    { label: 'Stacjonarne', param: 'stacjonarne', format: 'stationary' },
-    { label: 'On-line', param: 'online', format: 'online' },
+    { label: 'Stacjonarne', param: COURSE_FORMAT_PARAMS.stationary, format: 'stationary' },
+    { label: 'On-line', param: COURSE_FORMAT_PARAMS.online, format: 'online' },
   ];
 
-  protected readonly activeFilter: Signal<FormatFilter> = computed(
-    () =>
-      this.filters.find((filter: FormatFilter) => filter.param === (this.forma() ?? null)) ??
-      this.filters[0],
-  );
+  protected readonly activeFilter: Signal<FormatFilter> = computed(() => {
+    const format: CourseFormat | null = parseCourseFormatParam(this.forma());
+    return this.filters.find((filter: FormatFilter) => filter.format === format) ?? this.filters[0];
+  });
 
   protected readonly items: Signal<readonly AgendaItem[]> = computed(() => {
     const format: CourseFormat | null = this.activeFilter().format;
@@ -56,11 +56,7 @@ export class Schedule {
     .getProgramsAwaitingDate()
     .map((program: CourseProgram): AwaitingCourse => ({
       program,
-      notifyHref: buildMailto(
-        COMPANY.email,
-        `Termin kursu: ${program.title}`,
-        'Proszę o informację o najbliższym terminie kursu.',
-      ),
+      notifyHref: buildNotifyMailto(program),
     }));
 
   constructor() {

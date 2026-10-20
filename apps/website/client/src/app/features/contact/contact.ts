@@ -28,7 +28,7 @@ export class Contact {
     event.preventDefault();
     const form: HTMLFormElement = event.target as HTMLFormElement;
     const data: FormData = new FormData(form);
-    const value = (name: string): string => String(data.get(name) ?? '');
+    const value: (name: string) => string = (name: string): string => String(data.get(name) ?? '');
 
     const body: string = formatFormLines([
       ['Imię i nazwisko', value('name')],

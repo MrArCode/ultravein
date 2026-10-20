@@ -1,6 +1,7 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { COURSE_FORMAT_PARAMS } from '../../../../core/utils/course-format-param';
 import { Icon } from '../../../../shared/ui/icon/icon';
 
 /** One of the ways a training can be delivered. */
@@ -35,7 +36,7 @@ export class CourseFormats {
       imageWidth: 800,
       imageHeight: 600,
       linkPath: '/kursy',
-      linkFormat: 'stacjonarne',
+      linkFormat: COURSE_FORMAT_PARAMS.stationary,
     },
     {
       title: 'Kursy on-line na żywo',
@@ -47,7 +48,7 @@ export class CourseFormats {
       imageWidth: 800,
       imageHeight: 600,
       linkPath: '/kursy',
-      linkFormat: 'online',
+      linkFormat: COURSE_FORMAT_PARAMS.online,
     },
     {
       title: 'Szkolenia w Twojej placówce',

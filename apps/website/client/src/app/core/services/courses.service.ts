@@ -1,6 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { COURSE_EDITIONS, COURSE_PROGRAMS } from '../data/courses.data';
-import { AgendaItem, CourseEdition, CourseFormat, CourseProgram } from '../models/course';
+import {
+  AgendaItem,
+  CourseAvailability,
+  CourseEdition,
+  CourseFormat,
+  CourseProgram,
+} from '../models/course';
+import { Clock } from './clock';
 
 /**
  * Access to the course catalog and calendar.
@@ -8,6 +15,7 @@ import { AgendaItem, CourseEdition, CourseFormat, CourseProgram } from '../model
  */
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
+  private readonly clock: Clock = inject(Clock);
   private readonly programs: readonly CourseProgram[] = COURSE_PROGRAMS;
   private readonly editions: readonly CourseEdition[] = COURSE_EDITIONS;
 
@@ -26,35 +34,33 @@ export class CoursesService {
     return this.programs.filter((program: CourseProgram) => program.format === format);
   }
 
-  /** All scheduled editions joined with their courses, earliest first. */
+  /** Editions that have not taken place yet, joined with their courses, earliest first. */
   getAgenda(): readonly AgendaItem[] {
     const items: AgendaItem[] = [];
-    for (const edition of this.editions) {
+    for (const edition of this.getUpcomingEditions()) {
       const program: CourseProgram | undefined = this.getProgram(edition.courseSlug);
       if (program !== undefined) {
         items.push({ edition, program });
       }
     }
-    return items.sort((a: AgendaItem, b: AgendaItem) =>
-      a.edition.date.localeCompare(b.edition.date),
-    );
+    return items;
   }
 
   getUpcoming(limit: number): readonly AgendaItem[] {
     return this.getAgenda().slice(0, limit);
   }
 
-  /** Editions of one course, earliest first. */
+  /** Upcoming editions of one course, earliest first. */
   getEditionsOf(slug: string): readonly CourseEdition[] {
-    return this.editions
-      .filter((edition: CourseEdition) => edition.courseSlug === slug)
-      .sort((a: CourseEdition, b: CourseEdition) => a.date.localeCompare(b.date));
+    return this.getUpcomingEditions().filter(
+      (edition: CourseEdition) => edition.courseSlug === slug,
+    );
   }
 
-  /** Public courses that have no scheduled edition yet. */
+  /** Public courses that have no upcoming edition. */
   getProgramsAwaitingDate(): readonly CourseProgram[] {
     const scheduled: Set<string> = new Set(
-      this.editions.map((edition: CourseEdition) => edition.courseSlug),
+      this.getUpcomingEditions().map((edition: CourseEdition) => edition.courseSlug),
     );
     return this.programs.filter(
       (program: CourseProgram) => program.format !== 'in-house' && !scheduled.has(program.slug),
@@ -65,5 +71,20 @@ export class CoursesService {
     return this.programs.filter((program: CourseProgram) =>
       program.instructors.includes(instructorName),
     );
+  }
+
+  /** Availability as it should be shown: an open course whose editions have all passed is only planned. */
+  getAvailability(program: CourseProgram): CourseAvailability {
+    if (program.availability === 'open' && this.getEditionsOf(program.slug).length === 0) {
+      return 'planned';
+    }
+    return program.availability;
+  }
+
+  private getUpcomingEditions(): CourseEdition[] {
+    const today: string = this.clock.today();
+    return this.editions
+      .filter((edition: CourseEdition) => edition.date >= today)
+      .sort((a: CourseEdition, b: CourseEdition) => a.date.localeCompare(b.date));
   }
 }
